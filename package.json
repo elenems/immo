@@ -9,11 +9,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
     "es6-promise": "4.1.1",
     "isomorphic-unfetch": "2.0.0",
     "next": "latest",
     "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^4.0.1",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
