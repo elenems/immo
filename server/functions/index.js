@@ -1,11 +1,17 @@
 const functions = require('firebase-functions');
 const cors = require('cors');
 const app = require('express')();
-app.use(cors());
 
+app.use(cors());
 const { getUser } = require('./routes/user');
+const { getPhotosByTag } = require('./routes/photo');
 
 // Users
 app.get('/getUser', getUser);
 
-exports.api = functions.region('europe-west2').https.onRequest(app);
+// Photos
+app.get('/getPhotosByTag', getPhotosByTag);
+
+exports.api = functions
+  .region('europe-west2')
+  .https.onRequest(app);
