@@ -26,9 +26,9 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
 };
 
 MyApp.propTypes = {
-  Component: PropTypes.object.isRequired,
-  pageProps: PropTypes.object.isRequired,
-  store: PropTypes.object.isRequired,
+  Component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  pageProps: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  store: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
 };
 
 export default withRedux(createStore)(withReduxSaga(MyApp));
