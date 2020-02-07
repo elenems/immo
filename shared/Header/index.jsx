@@ -15,6 +15,7 @@ export default function Header() {
         {`
           header {
             display: flex;
+            z-index: 10;
             align-items: center;
             justify-content: space-between;
             background: #070943;

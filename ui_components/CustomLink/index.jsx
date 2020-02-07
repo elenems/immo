@@ -2,16 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-function CustomLink({
-  href,
-  text,
-  color,
-  title,
-}) {
+function CustomLink({ href, text, color, title }) {
   return (
     <div>
       <Link href={href}>
-        <a title={title}>{text}</a>
+        <a href={href} title={title}>
+          {text}
+        </a>
       </Link>
       <style jsx>
         {`
