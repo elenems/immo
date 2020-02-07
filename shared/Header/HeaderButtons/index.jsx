@@ -6,16 +6,8 @@ export default function HeaderButtons() {
   return (
     <div>
       <div className="header-controls">
-        <Button
-          text="Load"
-          title="Load your photo"
-          callback={() => {}}
-        />
-        <CustomLink
-          href="/login"
-          text="Login"
-          title="Login to your profile"
-        />
+        <Button text="Load" title="Load your photo" callback={() => {}} />
+        <CustomLink href="/join" text="Join" title="Join Immo" />
       </div>
       <style jsx>
         {`
