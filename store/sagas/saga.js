@@ -8,13 +8,15 @@ const { REACT_APP_API } = process.env;
 function* joinUserSaga(action) {
   try {
     const res = yield call(() =>
-      axios.post(`${REACT_APP_API}/join`, action.payload),
+      axios.post(`${REACT_APP_API}/join`, action.payload.values),
     );
     const { token } = res.data;
     yield put({ type: T.JOIN_SUCCESS, payload: token });
+    yield action.payload.setLoaderDisplay('none');
   } catch (e) {
     const error = e.response.data;
     yield put({ type: T.JOIN_FAIL, payload: error });
+    yield action.payload.setLoaderDisplay('none');
   }
 }
 

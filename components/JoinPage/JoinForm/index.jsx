@@ -48,7 +48,7 @@ function JoinForm({ join, joinErrors }) {
         validationSchema={joinSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
-          join(values);
+          join({ values, setLoaderDisplay });
           setSubmitting(false);
         }}
       >
