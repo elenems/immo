@@ -20,8 +20,23 @@ function* joinUserSaga(action) {
   }
 }
 
+function* loginUserSaga(action) {
+  try {
+    const res = yield call(() =>
+      axios.post(`${REACT_APP_API}/login`, action.payload.values),
+    );
+    const { token } = res.data;
+    yield put({ type: T.LOG_IN_SUCCESS, payload: token });
+    yield action.payload.setLoaderDisplay('none');
+  } catch (e) {
+    const error = e.response.data;
+    action.payload.setLoginErrors(error);
+    yield action.payload.setLoaderDisplay('none');
+  }
+}
+
 function* rootSaga() {
-  yield all([takeLatest(T.JOIN, joinUserSaga)]);
+  yield all([takeLatest(T.JOIN, joinUserSaga), takeLatest(T.LOG_IN, loginUserSaga)]);
 }
 
 export default rootSaga;
