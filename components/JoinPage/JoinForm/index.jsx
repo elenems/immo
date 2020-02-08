@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { joinAction } from '../../../store/actions';
@@ -51,7 +57,14 @@ function JoinForm({ join }) {
       </div>
 
       <Formik
-        initialValues={{ email: '', password: '', firstName: '', lastName: '' }}
+        initialValues={
+          {
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+          }
+        }
         validationSchema={joinSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
@@ -155,7 +168,7 @@ function JoinForm({ join }) {
               </div>
             </div>
             <button type="submit" disabled={isSubmitting}>
-              Submit
+              Join
             </button>
           </Form>
         )}
@@ -266,10 +279,12 @@ function JoinForm({ join }) {
   );
 }
 
+JoinForm.propTypes = {
+  join: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   join: (payload) => dispatch(joinAction(payload)),
 });
 
-const mapStateToProps = (state) => ({ joinErrors: state.auth.joinErrors });
-
-export default connect(mapStateToProps, mapDispatchToProps)(JoinForm);
+export default connect(null, mapDispatchToProps)(JoinForm);
