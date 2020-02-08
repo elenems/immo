@@ -3,12 +3,13 @@ const cors = require('cors');
 const app = require('express')();
 
 app.use(cors());
-const { getUser, joinUser } = require('./routes/user');
+const { getUser, joinUser, loginUser } = require('./routes/user');
 const { getPhotosByTag, getPhotos } = require('./routes/photo');
 
 // Users
 app.get('/getUser', getUser);
 app.post('/join', joinUser);
+app.post('/login', loginUser);
 
 // Photos
 app.get('/getPhotosByTag', getPhotosByTag);

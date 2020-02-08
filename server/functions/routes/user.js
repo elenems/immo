@@ -75,3 +75,41 @@ exports.joinUser = (req, res) => {
       return res.status(500).json({ message: 'Something went wrong' });
     });
 };
+
+// eslint-disable-next-line consistent-return
+exports.loginUser = (req, res) => {
+  const user = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  const errors = {};
+
+  const email = validateEmail(user.email);
+  const password = validatePassword(user.password);
+
+  if (!email.valid) {
+    errors.emailError = email.message;
+  }
+
+  if (!password.valid) {
+    errors.passwordError = password.message;
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json(errors);
+  }
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(user.email, user.password)
+    .then((data) => data.user.getIdToken())
+    .then((token) => res.json({ token }))
+    .catch(() => {
+      // auth/wrong-password
+      // auth/user-not-user
+      errors.emailError = 'Wrong credentials, please try again';
+      errors.passwordError = 'Wrong credentials, please try again';
+      return res.status(403).json(errors);
+    });
+};
