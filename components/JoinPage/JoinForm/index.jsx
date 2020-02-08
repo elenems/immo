@@ -27,8 +27,15 @@ const joinSchema = Yup.object().shape({
     .required('*Required field'),
 });
 
-function JoinForm({ join, joinErrors }) {
+function removeServerError(error, field, errorsObj, callback) {
+  if (error && errorsObj[field]) {
+    callback({ ...errorsObj, [field]: '' });
+  }
+}
+
+function JoinForm({ join }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
+  const [joinErrors, setJoinErrors] = useState({});
   return (
     <div className="form-container">
       <div className="form-heading">
@@ -48,11 +55,11 @@ function JoinForm({ join, joinErrors }) {
         validationSchema={joinSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
-          join({ values, setLoaderDisplay });
+          join({ values, setLoaderDisplay, setJoinErrors });
           setSubmitting(false);
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors }) => (
           <Form>
             <div className="fields-container">
               <div className="two-inputs-container">
@@ -62,6 +69,14 @@ function JoinForm({ join, joinErrors }) {
                     style={inputStyle}
                     type="text"
                     name="firstName"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.firstName,
+                        'firstNameError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
                   />
                   <ErrorMessage
                     className="error-text"
@@ -78,6 +93,14 @@ function JoinForm({ join, joinErrors }) {
                     style={inputStyle}
                     type="text"
                     name="lastName"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.lastName,
+                        'lastNameError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
                   />
                   <ErrorMessage
                     className="error-text"
@@ -92,6 +115,14 @@ function JoinForm({ join, joinErrors }) {
                   style={inputStyle}
                   type="email"
                   name="email"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.email,
+                      'emailError',
+                      joinErrors,
+                      setJoinErrors,
+                    );
+                  }}
                 />
                 <ErrorMessage
                   className="error-text"
@@ -106,6 +137,14 @@ function JoinForm({ join, joinErrors }) {
                   style={inputStyle}
                   type="password"
                   name="password"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.password,
+                      'passwordError',
+                      joinErrors,
+                      setJoinErrors,
+                    );
+                  }}
                 />
                 <ErrorMessage
                   className="error-text"

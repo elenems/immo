@@ -15,7 +15,7 @@ function* joinUserSaga(action) {
     yield action.payload.setLoaderDisplay('none');
   } catch (e) {
     const error = e.response.data;
-    yield put({ type: T.JOIN_FAIL, payload: error });
+    action.payload.setJoinErrors(error);
     yield action.payload.setLoaderDisplay('none');
   }
 }
