@@ -74,3 +74,37 @@ exports.likePhoto = (req, res) => {
     .then(() => res.status(200).json({ message: 'Liked successfuly' }))
     .catch(() => res.status(400).json({ error: "Can't like" }));
 };
+
+exports.unlikePhoto = (req, res) => {
+  const { photoId } = req.body;
+  const { userId } = req.body;
+
+  db.collection('users')
+    .doc(userId)
+    .get()
+    .then((doc) => {
+      const { favourites } = doc.data();
+      delete favourites[photoId];
+      db.collection('users')
+        .doc(userId)
+        .update({
+          favourites,
+        });
+    })
+    .then(() => db
+      .collection('photos')
+      .doc(photoId)
+      .get())
+    .then((doc) => {
+      const likes = doc.data().likesCount - 1;
+      db.collection('photos')
+        .doc(photoId)
+        .update({
+          likesCount: likes,
+        });
+    })
+    .then(() => res.status(200).json({ message: 'Unliked successfuly' }))
+    .catch(() => {
+      res.status(400).json({ error: "Can't unlike" });
+    });
+};
