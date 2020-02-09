@@ -5,6 +5,8 @@ export const actionTypes = {
   JOIN: 'JOIN',
   JOIN_SUCCESS: 'JOIN_SUCCESS',
   AUTHENTICATE: 'AUTHENTICATE',
+  SHOW_CARD: 'SHOW_CARD',
+  HIDE_CARD: 'HIDE_CARD',
 };
 
 export const logoutAction = () => {
@@ -15,3 +17,5 @@ export const logoutAction = () => {
 export const joinAction = (payload) => ({ type: actionTypes.JOIN, payload });
 export const loginAction = (payload) => ({ type: actionTypes.LOG_IN, payload });
 export const authenticateAction = () => ({ type: actionTypes.AUTHENTICATE });
+export const showCardAction = (payload) => ({ type: actionTypes.SHOW_CARD, payload });
+export const hideCardAction = () => ({ type: actionTypes.HIDE_CARD });
