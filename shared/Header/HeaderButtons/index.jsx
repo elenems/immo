@@ -23,7 +23,7 @@ function HeaderButtons({ isAuthenticated }) {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-width: 135px;
+            min-width: ${isAuthenticated ? '135' : '125'}px;
           }
         `}
       </style>
