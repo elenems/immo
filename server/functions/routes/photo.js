@@ -42,3 +42,35 @@ exports.getPhotos = (req, res) => {
       }),
     );
 };
+
+exports.likePhoto = (req, res) => {
+  const { photoId } = req.body;
+  const { userId } = req.body;
+
+  db.collection('users')
+    .doc(userId)
+    .get()
+    .then((doc) => {
+      const { favourites } = doc.data();
+      favourites.photoId = photoId;
+      db.collection('users')
+        .doc(userId)
+        .update({
+          favourites,
+        });
+    })
+    .then(() => db
+      .collection('photos')
+      .doc(photoId)
+      .get())
+    .then((doc) => {
+      const favourites = doc.data().likesCount + 1;
+      db.collection('photos')
+        .doc(photoId)
+        .update({
+          likesCount: favourites,
+        });
+    })
+    .then(() => res.status(200).json({ message: 'Liked successfuly' }))
+    .catch(() => res.status(400).json({ error: "Can't like" }));
+};
