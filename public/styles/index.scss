@@ -48,3 +48,9 @@ p {
 .star:before {
   content: '*';
 }
+
+.card {
+  animation-name: $animation-move-down-up;
+  animation-duration: 3s;
+  animation-delay: 0.5s;
+}

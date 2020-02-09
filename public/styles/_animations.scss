@@ -7,4 +7,23 @@
   }
 }
 
+@keyframes move-down-up {
+  0% {
+    top: -60px;
+  }
+  10% {
+    top: 70px;
+  }
+  50% {
+    top: 70px;
+  }
+  90% {
+    top: 70px;
+  }
+  100% {
+    top: -60px;
+  }
+}
+
 $animation-opacity-in: opacity-in;
+$animation-move-down-up: move-down-up;
