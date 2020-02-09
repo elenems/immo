@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TiHeartFullOutline, TiEye, TiHeartOutline } from 'react-icons/ti';
+import { TiEye } from 'react-icons/ti';
+import HeartButton from '../../../../ui_components/HeartButton/index';
 
 function BottomWall({ tags }) {
   return (
@@ -16,14 +17,7 @@ function BottomWall({ tags }) {
           <TiEye />
         </i>
       </div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-        type="button"
-      >
-        <TiHeartFullOutline />
-      </button>
+      <HeartButton />
       <style jsx>
         {`
           .photo-bottom-wall {
@@ -55,22 +49,6 @@ function BottomWall({ tags }) {
             font-size: 28px;
             color: white;
             margin-left: 6px;
-          }
-
-          button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            transition: transform 0.25s;
-          }
-
-          button:hover {
-            transform: scale(1.2);
           }
         `}
       </style>
