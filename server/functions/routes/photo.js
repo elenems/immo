@@ -52,7 +52,7 @@ exports.likePhoto = (req, res) => {
     .get()
     .then((doc) => {
       const { favourites } = doc.data();
-      favourites.photoId = photoId;
+      favourites[photoId] = photoId;
       db.collection('users')
         .doc(userId)
         .update({
