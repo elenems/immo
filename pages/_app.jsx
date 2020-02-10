@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import jwtDecode from 'jwt-decode';
 import Router from 'next/router';
-import { logoutAction, authenticateAction } from '../store/actions';
+import { logoutAction, getUserAction } from '../store/actions';
 import '../public/styles/index.scss';
 
 import createStore from '../store/store';
@@ -15,12 +15,16 @@ function MyApp({ Component, pageProps, store }) {
     // eslint-disable-next-line no-undef
     const token = sessionStorage.getItem('token');
     if (token) {
-      const decodedToken = jwtDecode(token);
-      if (decodedToken.exp * 1000 < Date.now()) {
+      try {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.exp * 1000 < Date.now()) {
+          store.dispatch(logoutAction());
+          Router.push('/');
+        } else if (!store.getState().auth.isAuthenticated) {
+          store.dispatch(getUserAction(decodedToken.email));
+        }
+      } catch (e) {
         store.dispatch(logoutAction());
-        Router.push('/');
-      } else if (!store.getState().auth.isAuthenticated) {
-        store.dispatch(authenticateAction());
       }
     }
   }
