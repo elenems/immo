@@ -12,6 +12,7 @@ const {
   incrementPhotoView,
   getPhoto,
   uploadPhoto,
+  removePhoto,
 } = require('./routes/photo');
 
 // Users
@@ -27,5 +28,6 @@ app.post('/unlikePhoto', unlikePhoto);
 app.post('/addView', incrementPhotoView);
 app.get('/getPhoto', getPhoto);
 app.post('/uploadPhoto', uploadPhoto);
+app.post('/removePhoto', removePhoto);
 
 exports.api = functions.region('europe-west2').https.onRequest(app);

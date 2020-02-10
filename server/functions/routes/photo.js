@@ -203,3 +203,13 @@ exports.uploadPhoto = (req, res) => {
   });
   busboy.end(req.rawBody);
 };
+
+exports.removePhoto = (req, res) => {
+  db.collection('photos')
+    .doc(req.body.photoId)
+    .delete()
+    .then(() => res.status(200).json({ message: 'Photo has been removed successfuly' }))
+    .catch(() => res
+      .status(400)
+      .json({ error: 'Error while removing the photo' }));
+};
