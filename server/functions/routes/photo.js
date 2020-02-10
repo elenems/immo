@@ -108,3 +108,18 @@ exports.unlikePhoto = (req, res) => {
       res.status(400).json({ error: "Can't remove" });
     });
 };
+
+exports.incrementPhotoView = (req, res) => {
+  db.collection('photos')
+    .doc(req.body.photoId)
+    .get()
+    .then((doc) => {
+      db.collection('photos')
+        .doc(req.body.photoId)
+        .update({
+          views: parseInt(doc.data().views, 10) + 1,
+        });
+      return res.status(200).json({ message: 'Photo views incremented' });
+    })
+    .catch((e) => res.status(400).json(e));
+};
