@@ -1,4 +1,11 @@
+const Busboy = require('busboy');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { Storage } = require('@google-cloud/storage');
 const { db } = require('../util/admin');
+
+const storage = new Storage();
 
 exports.getPhotosByTag = (req, res) => {
   const tag = req.query.tag.toLowerCase();
@@ -134,4 +141,65 @@ exports.getPhoto = (req, res) => {
       ...doc.data(),
     }))
     .catch((e) => res.status(500).json({ e }));
+};
+
+// eslint-disable-next-line consistent-return
+exports.uploadPhoto = (req, res) => {
+  const busboy = new Busboy({
+    headers: req.headers,
+  });
+  let uploadData = null;
+  let link = null;
+  const errors = {};
+
+  if (!req.query.title.length) {
+    errors.titleError = 'Must not be empty';
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  const photoInfo = req.query;
+
+  photoInfo.likesCount = 0;
+  photoInfo.views = 0;
+  photoInfo.date = new Date().toUTCString();
+
+  // eslint-disable-next-line consistent-return
+  busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+    if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+      return res.status(400).json({ error: 'Wrong file type submitted' });
+    }
+
+    link = new Date().getTime() + filename;
+    const filepath = path.join(os.tmpdir(), link);
+    uploadData = { file: filepath, type: mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+  });
+
+  busboy.on('finish', () => {
+    const bucketName = 'immo-764e3.appspot.com';
+    storage
+      .bucket(bucketName)
+      .upload(uploadData.file, {
+        uploadType: 'media',
+        metadata: {
+          metadata: {
+            contentType: uploadData.type,
+          },
+        },
+      })
+      .then(() => {
+        link = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/photos/o/${link}?alt=media`;
+        db.collection('photos').add({ image: link, ...photoInfo });
+      })
+      .then(() => res.status(200).json({
+        message: 'Photo has been added successfuly',
+      }))
+      .catch(() => res
+        .status(500)
+        .json({ error: 'Something went wrong, please try again later' }));
+  });
+  busboy.end(req.rawBody);
 };
