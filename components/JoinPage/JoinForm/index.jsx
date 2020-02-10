@@ -82,6 +82,7 @@ function JoinForm({ join }) {
                     style={inputStyle}
                     type="text"
                     name="firstName"
+                    autoComplete="on"
                     innerRef={() => {
                       removeServerError(
                         errors.firstName,
@@ -106,6 +107,7 @@ function JoinForm({ join }) {
                     style={inputStyle}
                     type="text"
                     name="lastName"
+                    autoComplete="on"
                     innerRef={() => {
                       removeServerError(
                         errors.lastName,
@@ -128,6 +130,7 @@ function JoinForm({ join }) {
                   style={inputStyle}
                   type="email"
                   name="email"
+                  autoComplete="on"
                   innerRef={() => {
                     removeServerError(
                       errors.email,
@@ -150,6 +153,7 @@ function JoinForm({ join }) {
                   style={inputStyle}
                   type="password"
                   name="password"
+                  autoComplete="cc-csc"
                   innerRef={() => {
                     removeServerError(
                       errors.password,

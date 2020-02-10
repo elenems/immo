@@ -72,6 +72,7 @@ function LoginForm({ login }) {
                   style={inputStyle}
                   type="email"
                   name="email"
+                  autoComplete="on"
                   innerRef={() => {
                     removeServerError(
                       errors.email,
@@ -94,6 +95,7 @@ function LoginForm({ login }) {
                   style={inputStyle}
                   type="password"
                   name="password"
+                  autoComplete="cc-csc"
                   innerRef={() => {
                     removeServerError(
                       errors.password,
