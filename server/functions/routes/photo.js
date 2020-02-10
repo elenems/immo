@@ -234,3 +234,27 @@ exports.getUserPhotos = (req, res) => {
     })
     .catch((e) => res.status(400).json({ error: e }));
 };
+
+exports.getFavouriteClothes = (req, res) => {
+  const { userId } = req.query;
+  let userFavourites = null;
+  const likedClothes = [];
+  db.collection('users')
+    .doc(userId)
+    .get()
+    .then((doc) => {
+      userFavourites = doc.data().favourites;
+      return db.collection('photos').get();
+    })
+    .then((photos) => {
+      if (userFavourites !== null) {
+        photos.forEach((item) => {
+          if (item.id in userFavourites) {
+            likedClothes.push({ id: item.id, ...item.data() });
+          }
+        });
+      }
+      return res.status(200).json({ likedClothes });
+    })
+    .catch(() => res.status(400).json({ error: 'Error getting favourites' }));
+};

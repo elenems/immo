@@ -14,6 +14,7 @@ const {
   uploadPhoto,
   removePhoto,
   getUserPhotos,
+  getFavouriteClothes,
 } = require('./routes/photo');
 
 // Users
@@ -31,5 +32,6 @@ app.get('/getPhoto', getPhoto);
 app.post('/uploadPhoto', uploadPhoto);
 app.post('/removePhoto', removePhoto);
 app.get('/getUserPhotos', getUserPhotos);
+app.get('/getFavouriteClothes', getFavouriteClothes);
 
 exports.api = functions.region('europe-west2').https.onRequest(app);
