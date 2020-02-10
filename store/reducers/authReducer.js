@@ -16,8 +16,8 @@ export default (state = initState, action) => {
       return { ...state, isAuthenticated: true };
     case T.AUTHENTICATE:
       return { ...state, isAuthenticated: true, user: action.payload };
-    case T.LOG_OUT:
-      return { ...initState };
+    case T.LOG_OUT_SUCCESS: return { ...initState };
+    case T.LOG_OUT_FAIL: return { ...state };
     case T.ADD_PHOTO_TO_FAVOURITE_SUCCESS: {
       const newFavourites = { ...state.user.favourites, [action.payload]: action.payload };
       return { ...state, user: { ...state.user, favourites: newFavourites } };

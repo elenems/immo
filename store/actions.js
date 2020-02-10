@@ -2,6 +2,8 @@ export const actionTypes = {
   LOG_IN: 'LOG_IN',
   LOG_IN_SUCCESS: 'LOG_IN_SUCCESS',
   LOG_OUT: 'LOG_OUT',
+  LOG_OUT_SUCCESS: 'LOG_OUT_SUCCESS',
+  LOG_OUT_FAIL: 'LOG_OUT_FAIL',
   JOIN: 'JOIN',
   JOIN_SUCCESS: 'JOIN_SUCCESS',
   AUTHENTICATE: 'AUTHENTICATE',
@@ -15,11 +17,7 @@ export const actionTypes = {
   REMOVE_PHOTO_FROM_FAVOURITE_FAIL: 'REMOVE_PHOTO_FROM_FAVOURITE_FAIL',
 };
 
-export const logoutAction = () => {
-  // eslint-disable-next-line no-undef
-  sessionStorage.removeItem('token');
-  return { type: actionTypes.LOG_OUT };
-};
+export const logoutAction = () => ({ type: actionTypes.LOG_OUT });
 export const joinAction = (payload) => ({ type: actionTypes.JOIN, payload });
 export const loginAction = (payload) => ({ type: actionTypes.LOG_IN, payload });
 export const authenticateAction = () => ({ type: actionTypes.AUTHENTICATE });

@@ -55,6 +55,17 @@ function* loginUserSaga(action) {
   }
 }
 
+function* logoutUserSaga() {
+  try {
+    // eslint-disable-next-line no-undef
+    yield sessionStorage.removeItem('token');
+    yield put({ type: T.LOG_OUT_SUCCESS });
+    Router.push('/');
+  } catch (e) {
+    yield put({ type: T.LOG_OUT_FAIL });
+  }
+}
+
 function* getUserSaga(action) {
   try {
     const res = yield axios.get(
@@ -107,6 +118,7 @@ function* rootSaga() {
     takeLatest(T.GET_USER, getUserSaga),
     takeLatest(T.ADD_PHOTO_TO_FAVOURITE, likePhotoSaga),
     takeLatest(T.REMOVE_PHOTO_FROM_FAVOURITE, unlikePhotoSaga),
+    takeLatest(T.LOG_OUT, logoutUserSaga),
   ]);
 }
 
