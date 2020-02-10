@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TiEye } from 'react-icons/ti';
 import HeartButton from '../../../../ui_components/HeartButton/index';
 
-function BottomWall({ tags }) {
+function BottomWall({ tags, photoId, views }) {
   return (
     <div className="photo-bottom-wall">
       <div className="bottom-wall-tags">
@@ -12,12 +12,12 @@ function BottomWall({ tags }) {
         ))}
       </div>
       <div className="views">
-        <span>102</span>
+        <span>{views}</span>
         <i>
           <TiEye />
         </i>
       </div>
-      <HeartButton />
+      <HeartButton id={photoId} />
       <style jsx>
         {`
           .photo-bottom-wall {
@@ -58,6 +58,8 @@ function BottomWall({ tags }) {
 
 BottomWall.propTypes = {
   tags: PropTypes.array.isRequired,
+  photoId: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
 };
 
 export default BottomWall;
