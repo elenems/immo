@@ -71,8 +71,8 @@ exports.likePhoto = (req, res) => {
           likesCount: favourites,
         });
     })
-    .then(() => res.status(200).json({ message: 'Liked successfuly' }))
-    .catch(() => res.status(400).json({ error: "Can't like" }));
+    .then(() => res.status(200).json({ message: 'Added to favourites' }))
+    .catch(() => res.status(400).json({ error: "Can't add" }));
 };
 
 exports.unlikePhoto = (req, res) => {
@@ -103,8 +103,8 @@ exports.unlikePhoto = (req, res) => {
           likesCount: likes,
         });
     })
-    .then(() => res.status(200).json({ message: 'Unliked successfuly' }))
+    .then(() => res.status(200).json({ message: 'Removed from favouites' }))
     .catch(() => {
-      res.status(400).json({ error: "Can't unlike" });
+      res.status(400).json({ error: "Can't remove" });
     });
 };
