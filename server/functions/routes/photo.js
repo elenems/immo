@@ -123,3 +123,15 @@ exports.incrementPhotoView = (req, res) => {
     })
     .catch((e) => res.status(400).json(e));
 };
+
+exports.getPhoto = (req, res) => {
+  const id = req.query.photoId;
+  db.collection('photos')
+    .doc(id)
+    .get()
+    .then((doc) => res.status(200).json({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    .catch((e) => res.status(500).json({ e }));
+};
