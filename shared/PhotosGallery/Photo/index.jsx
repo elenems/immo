@@ -10,7 +10,7 @@ function Photo({ photo }) {
       <Link href="/photo/[id]" as={`/photo/${photo.id}`}>
         <div>
           <img src={photo.url} alt={photo.name} />
-          <BottomWall tags={photo.tags} />
+          <BottomWall views={photo.views} photoId={photo.id} tags={photo.tags} />
         </div>
       </Link>
     </div>

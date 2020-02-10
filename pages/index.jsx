@@ -5,11 +5,13 @@ import fetch from 'isomorphic-unfetch';
 import Header from '../shared/Header';
 import Presentation from '../components/HomePage/Presentation/index';
 import ImagesContainer from '../components/HomePage/ImagesContainer/index';
+import Card from '../ui_components/Card/index';
 
 function Index({ photos }) {
   return (
     <div>
       <Header />
+      <Card />
       <Presentation />
       <div className="container">
         <ImagesContainer photos={photos} />

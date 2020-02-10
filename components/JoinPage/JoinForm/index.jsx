@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { joinAction } from '../../../store/actions';
@@ -27,8 +33,15 @@ const joinSchema = Yup.object().shape({
     .required('*Required field'),
 });
 
-function JoinForm({ join, joinErrors }) {
+function removeServerError(error, field, errorsObj, callback) {
+  if (error && errorsObj[field]) {
+    callback({ ...errorsObj, [field]: '' });
+  }
+}
+
+function JoinForm({ join }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
+  const [joinErrors, setJoinErrors] = useState({});
   return (
     <div className="form-container">
       <div className="form-heading">
@@ -44,15 +57,22 @@ function JoinForm({ join, joinErrors }) {
       </div>
 
       <Formik
-        initialValues={{ email: '', password: '', firstName: '', lastName: '' }}
+        initialValues={
+          {
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+          }
+        }
         validationSchema={joinSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
-          join(values);
+          join({ values, setLoaderDisplay, setJoinErrors });
           setSubmitting(false);
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors }) => (
           <Form>
             <div className="fields-container">
               <div className="two-inputs-container">
@@ -62,6 +82,15 @@ function JoinForm({ join, joinErrors }) {
                     style={inputStyle}
                     type="text"
                     name="firstName"
+                    autoComplete="on"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.firstName,
+                        'firstNameError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
                   />
                   <ErrorMessage
                     className="error-text"
@@ -78,6 +107,15 @@ function JoinForm({ join, joinErrors }) {
                     style={inputStyle}
                     type="text"
                     name="lastName"
+                    autoComplete="on"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.lastName,
+                        'lastNameError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
                   />
                   <ErrorMessage
                     className="error-text"
@@ -92,6 +130,15 @@ function JoinForm({ join, joinErrors }) {
                   style={inputStyle}
                   type="email"
                   name="email"
+                  autoComplete="on"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.email,
+                      'emailError',
+                      joinErrors,
+                      setJoinErrors,
+                    );
+                  }}
                 />
                 <ErrorMessage
                   className="error-text"
@@ -106,6 +153,15 @@ function JoinForm({ join, joinErrors }) {
                   style={inputStyle}
                   type="password"
                   name="password"
+                  autoComplete="cc-csc"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.password,
+                      'passwordError',
+                      joinErrors,
+                      setJoinErrors,
+                    );
+                  }}
                 />
                 <ErrorMessage
                   className="error-text"
@@ -116,7 +172,7 @@ function JoinForm({ join, joinErrors }) {
               </div>
             </div>
             <button type="submit" disabled={isSubmitting}>
-              Submit
+              Join
             </button>
           </Form>
         )}
@@ -227,10 +283,12 @@ function JoinForm({ join, joinErrors }) {
   );
 }
 
+JoinForm.propTypes = {
+  join: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   join: (payload) => dispatch(joinAction(payload)),
 });
 
-const mapStateToProps = (state) => ({ joinErrors: state.auth.joinErrors });
-
-export default connect(mapStateToProps, mapDispatchToProps)(JoinForm);
+export default connect(null, mapDispatchToProps)(JoinForm);

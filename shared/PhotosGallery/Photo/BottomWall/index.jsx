@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TiHeartFullOutline, TiEye, TiHeartOutline } from 'react-icons/ti';
+import { TiEye } from 'react-icons/ti';
+import HeartButton from '../../../../ui_components/HeartButton/index';
 
-function BottomWall({ tags }) {
+function BottomWall({ tags, photoId, views }) {
   return (
     <div className="photo-bottom-wall">
       <div className="bottom-wall-tags">
@@ -11,19 +12,12 @@ function BottomWall({ tags }) {
         ))}
       </div>
       <div className="views">
-        <span>102</span>
+        <span>{views}</span>
         <i>
           <TiEye />
         </i>
       </div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-        type="button"
-      >
-        <TiHeartFullOutline />
-      </button>
+      <HeartButton id={photoId} />
       <style jsx>
         {`
           .photo-bottom-wall {
@@ -56,22 +50,6 @@ function BottomWall({ tags }) {
             color: white;
             margin-left: 6px;
           }
-
-          button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            transition: transform 0.25s;
-          }
-
-          button:hover {
-            transform: scale(1.2);
-          }
         `}
       </style>
     </div>
@@ -80,6 +58,8 @@ function BottomWall({ tags }) {
 
 BottomWall.propTypes = {
   tags: PropTypes.array.isRequired,
+  photoId: PropTypes.string.isRequired,
+  views: PropTypes.number.isRequired,
 };
 
 export default BottomWall;

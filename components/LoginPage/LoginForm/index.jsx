@@ -1,5 +1,14 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import { loginAction } from '../../../store/actions';
 
 const inputStyle = {
   padding: '14px',
@@ -7,28 +16,54 @@ const inputStyle = {
   width: '100%',
 };
 
-export default function LoginForm() {
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email')
+    .required('*Required field'),
+  password: Yup.string()
+    .min(8, 'Too Short')
+    .max(50, 'Too Long')
+    .required('*Required field'),
+});
+
+function removeServerError(error, field, errorsObj, callback) {
+  if (error && errorsObj[field]) {
+    callback({ ...errorsObj, [field]: '' });
+  }
+}
+
+function LoginForm({ login }) {
+  const [loaderDisplay, setLoaderDisplay] = useState('none');
+  const [loginErrors, setLoginErrors] = useState({});
   return (
     <div className="form-container">
       <div className="form-heading">
-        <h1>Welcome back!</h1>
-        <p>Login to your profile.</p>
+        <h1>Welcome!</h1>
+        <p>Login to your profile</p>
+        <div className="loader-container">
+          <img
+            style={{ display: loaderDisplay }}
+            src="/svg/three-dots.svg"
+            alt="Loading..."
+          />
+        </div>
       </div>
 
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={() => {
-          const errors = {};
-          return errors;
-        }}
+        initialValues={
+          {
+            email: '',
+            password: '',
+          }
+        }
+        validationSchema={loginSchema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            // alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          setLoaderDisplay('inline');
+          login({ values, setLoaderDisplay, setLoginErrors });
+          setSubmitting(false);
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors }) => (
           <Form>
             <div className="fields-container">
               <div className="input-wrapper">
@@ -37,8 +72,22 @@ export default function LoginForm() {
                   style={inputStyle}
                   type="email"
                   name="email"
+                  autoComplete="on"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.email,
+                      'emailError',
+                      loginErrors,
+                      setLoginErrors,
+                    );
+                  }}
                 />
-                <ErrorMessage name="email" component="span" />
+                <ErrorMessage
+                  className="error-text"
+                  name="email"
+                  component="span"
+                />
+                <span className="error-text">{loginErrors.emailError}</span>
               </div>
               <div className="input-wrapper">
                 <Field
@@ -46,8 +95,22 @@ export default function LoginForm() {
                   style={inputStyle}
                   type="password"
                   name="password"
+                  autoComplete="cc-csc"
+                  innerRef={() => {
+                    removeServerError(
+                      errors.password,
+                      'passwordError',
+                      loginErrors,
+                      setLoginErrors,
+                    );
+                  }}
                 />
-                <ErrorMessage name="password" component="span" />
+                <ErrorMessage
+                  className="error-text"
+                  name="password"
+                  component="span"
+                />
+                <span className="error-text">{loginErrors.passwordError}</span>
               </div>
             </div>
             <button type="submit" disabled={isSubmitting}>
@@ -61,6 +124,13 @@ export default function LoginForm() {
           .fields-container {
             display: flex;
             flex-direction: column;
+          }
+
+          .loader-container {
+            width: 100%;
+            height: 20px;
+            text-align: center;
+            margin: 4px 0px 8px;
           }
 
           button[type='submit'] {
@@ -102,20 +172,10 @@ export default function LoginForm() {
             border-radius: 8px;
           }
 
-          .form-heading {
-            margin-bottom: 30px;
-          }
-
           .form-heading p {
             font-size: 18px;
             margin-top: 12px;
             color: #787878;
-          }
-
-          strong {
-            font-size: 14px;
-            font-weight: 400;
-            color: #595959;
           }
 
           h1 {
@@ -129,3 +189,13 @@ export default function LoginForm() {
     </div>
   );
 }
+
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (payload) => dispatch(loginAction(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(LoginForm);
