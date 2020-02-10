@@ -213,3 +213,24 @@ exports.removePhoto = (req, res) => {
       .status(400)
       .json({ error: 'Error while removing the photo' }));
 };
+
+exports.getUserPhotos = (req, res) => {
+  const photos = [];
+  db.collection('photos')
+    .where('owner', '==', req.query.userId)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return res.status(400).json({ error: 'Not found' });
+      }
+      snapshot.forEach((doc) => {
+        photos.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      return res.status(200).json({ photos });
+    })
+    .catch((e) => res.status(400).json({ error: e }));
+};
