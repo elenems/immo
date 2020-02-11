@@ -4,7 +4,18 @@ const app = require('express')();
 
 app.use(cors());
 const { getUser, joinUser, loginUser } = require('./routes/user');
-const { getPhotosByTag, getPhotos, likePhoto, unlikePhoto } = require('./routes/photo');
+const {
+  getPhotosByTag,
+  getPhotos,
+  likePhoto,
+  unlikePhoto,
+  incrementPhotoView,
+  getPhoto,
+  uploadPhoto,
+  removePhoto,
+  getUserPhotos,
+  getFavouriteClothes,
+} = require('./routes/photo');
 
 // Users
 app.get('/getUser', getUser);
@@ -16,5 +27,11 @@ app.get('/getPhotosByTag', getPhotosByTag);
 app.get('/getPhotos', getPhotos);
 app.post('/likePhoto', likePhoto);
 app.post('/unlikePhoto', unlikePhoto);
+app.post('/addView', incrementPhotoView);
+app.get('/getPhoto', getPhoto);
+app.post('/uploadPhoto', uploadPhoto);
+app.post('/removePhoto', removePhoto);
+app.get('/getUserPhotos', getUserPhotos);
+app.get('/getFavouriteClothes', getFavouriteClothes);
 
 exports.api = functions.region('europe-west2').https.onRequest(app);
