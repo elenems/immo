@@ -4,6 +4,7 @@ const os = require('os');
 const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const { db } = require('../util/admin');
+const { hasTag } = require('../util/functions');
 
 const storage = new Storage();
 
@@ -231,10 +232,10 @@ exports.getUserPhotos = (req, res) => {
     .catch((e) => res.status(400).json({ error: e }));
 };
 
-exports.getFavouriteClothes = (req, res) => {
+exports.getFavouritePhotos = (req, res) => {
   const { userId } = req.query;
   let userFavourites = null;
-  const likedClothes = [];
+  const likedPhotos = [];
   db.collection('users')
     .doc(userId)
     .get()
@@ -246,11 +247,32 @@ exports.getFavouriteClothes = (req, res) => {
       if (userFavourites !== null) {
         photos.forEach((item) => {
           if (item.id in userFavourites) {
-            likedClothes.push({ id: item.id, ...item.data() });
+            likedPhotos.push({ id: item.id, ...item.data() });
           }
         });
       }
-      return res.status(200).json({ likedClothes });
+      return res.status(200).json({ likedPhotos });
     })
     .catch(() => res.status(400).json({ error: 'Error getting favourites' }));
+};
+
+exports.getRelatedPhotos = (req, res) => {
+  const tags = req.query.tags.split(',');
+  const relatedPhotos = [];
+  db.collection('photos')
+    .get()
+    .then((photos) => {
+      photos.forEach((item) => {
+        const stringifiedTags = item.data().tags.toString();
+        if (hasTag(stringifiedTags, tags)) {
+          relatedPhotos.push({
+            id: item.id,
+            ...item.data(),
+          });
+        }
+      });
+
+      return res.status(200).json({ related: relatedPhotos.slice(0, 10) });
+    })
+    .catch(() => res.status(403).json({ error: "Can't load related photos" }));
 };

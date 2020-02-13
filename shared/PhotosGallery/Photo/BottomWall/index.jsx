@@ -2,17 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TiEye } from 'react-icons/ti';
 import HeartButton from '../../../../ui_components/HeartButton/index';
+import Tags from '../../../../ui_components/TagsList/index';
 
 function BottomWall({ tags, photoId, views }) {
   return (
     <div className="photo-bottom-wall">
       <div className="bottom-wall-tags">
-        {tags.map((tag) => (
-          <span key={tag}>{`#${tag}`}</span>
-        ))}
+        <Tags tags={tags} />
       </div>
       <div className="views">
-        <span>{views}</span>
+        <span>{views < 1000 ? views : '...'}</span>
         <i>
           <TiEye />
         </i>
@@ -29,26 +28,24 @@ function BottomWall({ tags, photoId, views }) {
             align-items: center;
           }
 
-          .bottom-wall-tags span {
-            color: white;
-            margin-right: 8px;
-          }
-
           .views {
             display: flex;
             align-items: center;
+            position: relative;
           }
 
           .views span {
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 900;
             color: white;
+            position: absolute;
+            top: -2px;
+            left: 4px;
           }
 
           .views i {
-            font-size: 28px;
-            color: white;
-            margin-left: 6px;
+            font-size: 34px;
+            color: black;
           }
         `}
       </style>
