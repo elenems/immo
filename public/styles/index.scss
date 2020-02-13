@@ -37,6 +37,12 @@ p {
   padding: 20px 40px;
 }
 
+h4 {
+  display: inline-block;
+  border-bottom: 4px solid $color-primary-accent;
+  margin-top: 0px;
+}
+
 .block {
   margin: 20px 0px;
 }
