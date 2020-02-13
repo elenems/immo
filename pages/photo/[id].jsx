@@ -4,10 +4,18 @@ import fetch from 'isomorphic-unfetch';
 import Header from '../../shared/Header/index';
 import Card from '../../ui_components/Card/index';
 import PhotoContainer from '../../components/PhotoPage/PhotoContainer/index';
+import PhotosGallery from '../../shared/PhotosGallery/index';
 
 function Photo({
-  photo: { url, name, tags },
+  photo: {
+    url,
+    name,
+    tags,
+    views,
+    id,
+  },
   user: { firstName, lastName, email },
+  relatedPhotos,
 }) {
   return (
     <div>
@@ -21,8 +29,13 @@ function Photo({
           tags={tags}
           photoUrl={url}
           name={name}
+          views={views}
+          photoId={id}
         />
-        <div>asd</div>
+        <div className="related-block">
+          <h4>Related</h4>
+          <PhotosGallery photos={relatedPhotos} imageWidth={280} />
+        </div>
       </div>
       <style jsx>
         {`
@@ -30,6 +43,22 @@ function Photo({
             display: flex;
             padding-top: 100px;
             justify-content: space-between;
+          }
+
+          .related-block {
+            margin-left: 80px;
+          }
+
+          @media (max-width: 960px) {
+            .container {
+              flex-direction: column;
+              align-items: center;
+            }
+
+            .related-block {
+              margin-top: 80px;
+              margin-left: 0px;
+            }
           }
         `}
       </style>
@@ -40,18 +69,37 @@ function Photo({
 Photo.propTypes = {
   photo: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  relatedPhotos: PropTypes.array,
+};
+
+Photo.defaultProps = {
+  relatedPhotos: [],
 };
 
 Photo.getInitialProps = async (context) => {
+  const API = 'https://europe-west2-immo-764e3.cloudfunctions.net/api';
   const photoId = context.ctx.query.id;
-  let url = `https://europe-west2-immo-764e3.cloudfunctions.net/api/getPhoto?photoId=${photoId}`;
-  let res = await fetch(url);
+  const urlToFetchImage = `${API}/getPhoto?photoId=${photoId}`;
+  const res = await fetch(urlToFetchImage);
   const photo = await res.json();
+
   const userId = photo.owner;
-  url = `https://europe-west2-immo-764e3.cloudfunctions.net/api/getUser?userId=${userId}`;
-  res = await fetch(url);
-  const user = await res.json();
-  return { photo, user };
+  const { tags } = photo;
+  const urlsToFetch = [
+    `${API}/getUser?userId=${userId}`,
+    `${API}/getRelatedPhotos?tags=${tags}`,
+  ];
+  let user;
+  let relatedPhotos = null;
+  await Promise.all(urlsToFetch.map((u) => fetch(u)))
+    .then((responses) => Promise.all(responses.map((response) => response.json())))
+    .then((objects) => {
+      [user, relatedPhotos] = objects;
+    });
+  const relatedWithoutShown = relatedPhotos.related.filter(
+    (relatedPhoto) => relatedPhoto.id !== photoId,
+  );
+  return { photo, user, relatedPhotos: relatedWithoutShown };
 };
 
 export default Photo;
