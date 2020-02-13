@@ -10,12 +10,14 @@ function BottomWall({ tags, photoId, views }) {
       <div className="bottom-wall-tags">
         <Tags tags={tags} />
       </div>
-      <div className="views">
-        <span>{views < 1000 ? views : '...'}</span>
-        <i>
-          <TiEye />
-        </i>
-      </div>
+      {views < 1000 ? (
+        <div className="views">
+          <span>{views}</span>
+          <i>
+            <TiEye />
+          </i>
+        </div>
+      ) : null}
       <HeartButton id={photoId} />
       <style jsx>
         {`
