@@ -11,7 +11,7 @@ function BottomWall({ tags, photoId, views }) {
         <Tags tags={tags} />
       </div>
       <div className="views">
-        <span>{views}</span>
+        <span>{views < 1000 ? views : '...'}</span>
         <i>
           <TiEye />
         </i>
