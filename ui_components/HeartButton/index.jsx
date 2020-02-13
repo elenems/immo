@@ -19,6 +19,7 @@ function HeartButton({
   user,
   likePhoto,
   unlikePhoto,
+  color,
 }) {
   const isLiked = id in user.favourites;
   return (
@@ -54,7 +55,7 @@ function HeartButton({
           button {
             background: none;
             border: none;
-            color: ${isLiked ? '#d81b60' : 'white'};
+            color: ${isLiked ? '#d81b60' : color};
             font-size: 28px;
             display: flex;
             align-items: center;
@@ -79,6 +80,13 @@ HeartButton.propTypes = {
   showCard: PropTypes.func.isRequired,
   hideCard: PropTypes.func.isRequired,
   isInProcess: PropTypes.bool.isRequired,
+  color: PropTypes.string,
+  likePhoto: PropTypes.func.isRequired,
+  unlikePhoto: PropTypes.func.isRequired,
+};
+
+HeartButton.defaultProps = {
+  color: '#fff',
 };
 
 const mapStateToProps = (state) => ({
