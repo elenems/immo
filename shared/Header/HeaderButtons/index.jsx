@@ -15,7 +15,7 @@ function HeaderButtons({ isAuthenticated }) {
     <div>
       <div className="header-controls">
         <Button text="Load" title="Load your photo" callback={() => redirectTo(page)} />
-        {isAuthenticated ? <CustomLink href="/logout" text="Logout" title="Logout" /> : <CustomLink href="/join" text="Join" title="Join Immo" />}
+        {isAuthenticated ? <CustomLink href="/profile" text="Profile" title="Profile" /> : <CustomLink href="/join" text="Join" title="Join Immo" />}
       </div>
       <style jsx>
         {`
