@@ -77,7 +77,7 @@ Photo.defaultProps = {
 };
 
 Photo.getInitialProps = async (context) => {
-  const API = 'https://europe-west2-immo-764e3.cloudfunctions.net/api';
+  const API = process.env.REACT_APP_API;
   const photoId = context.ctx.query.id;
   const urlToFetchImage = `${API}/getPhoto?photoId=${photoId}`;
   const res = await fetch(urlToFetchImage);
