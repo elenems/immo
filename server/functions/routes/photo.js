@@ -272,7 +272,7 @@ exports.getRelatedPhotos = (req, res) => {
         }
       });
 
-      return res.status(200).json({ related: relatedPhotos.slice(0, 9) });
+      return res.status(200).json({ related: relatedPhotos.slice(0, 10) });
     })
     .catch(() => res.status(403).json({ error: "Can't load related photos" }));
 };
