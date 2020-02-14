@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { connect } from 'react-redux';
 import Header from '../shared/Header/index';
+import Card from '../ui_components/Card/index';
 import Controls from '../components/ProfilePage/Controls/index';
 import PhotosSection from '../components/ProfilePage/PhotosSection/index';
 
@@ -42,6 +43,7 @@ function Profile({ userPhotos, favouritePhotos, userId }) {
   return (
     <div>
       <Header />
+      <Card />
       <div className="container">
         <Controls loading={loading} />
         <PhotosSection loading={loading} userPhotos={photos} favouritePhotos={favourites} />
