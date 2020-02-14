@@ -15,6 +15,9 @@ export const actionTypes = {
   REMOVE_PHOTO_FROM_FAVOURITE: 'REMOVE_PHOTO_FROM_FAVOURITE',
   REMOVE_PHOTO_FROM_FAVOURITE_SUCCESS: 'REMOVE_PHOTO_FROM_FAVOURITE_SUCCESS',
   REMOVE_PHOTO_FROM_FAVOURITE_FAIL: 'REMOVE_PHOTO_FROM_FAVOURITE_FAIL',
+  LOAD_PHOTO: 'LOAD_PHOTO',
+  LOAD_PHOTO_SUCCESS: 'LOAD_PHOTO_SUCCESS',
+  LOAD_PHOTO_FAIL: 'LOAD_PHOTO_FAIL',
 };
 
 export const logoutAction = () => ({ type: actionTypes.LOG_OUT });
@@ -37,5 +40,10 @@ export const likePhotoAction = (payload) => ({
 
 export const unlikePhotoAction = (payload) => ({
   type: actionTypes.REMOVE_PHOTO_FROM_FAVOURITE,
+  payload,
+});
+
+export const loadAction = (payload) => ({
+  type: actionTypes.LOAD_PHOTO,
   payload,
 });
