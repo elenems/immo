@@ -27,7 +27,7 @@ function* joinUserSaga(action) {
     if (process.browser) {
       // eslint-disable-next-line no-undef
       sessionStorage.setItem('token', token);
-      Router.push('/');
+      Router.push('/profile');
     }
   } catch (e) {
     const error = e.response.data;
@@ -48,7 +48,7 @@ function* loginUserSaga(action) {
     if (process.browser) {
       // eslint-disable-next-line no-undef
       sessionStorage.setItem('token', token);
-      Router.push('/');
+      Router.push('/profile');
     }
   } catch (e) {
     const error = e.response.data;
