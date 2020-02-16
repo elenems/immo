@@ -61,7 +61,6 @@ function LoadForm({ load, owner }) {
         initialValues={{
           name,
           tags,
-          file: selectedFile,
           owner,
         }}
         validationSchema={loadSchema}
@@ -70,7 +69,7 @@ function LoadForm({ load, owner }) {
           if (selectedFile !== null) {
             setLoaderDisplay('inline');
             load({
-              values,
+              values: { ...values, file: selectedFile },
               setLoaderDisplay,
               setloadErrors,
               setName,
@@ -124,6 +123,11 @@ function LoadForm({ load, owner }) {
                     name="file"
                     onChange={onChangeHandler}
                   />
+                  <span className="show-file-info">
+                    {selectedFile !== null
+                      ? selectedFile.name
+                      : 'Choose a file'}
+                  </span>
                 </label>
                 <span style={{ display: 'block' }} className="error-text">
                   {loadErrors.photoError || fileError}
@@ -148,11 +152,14 @@ function LoadForm({ load, owner }) {
         {`
           .inputfile {
             overflow: hidden;
-            position: absolute;
-            top: 20%;
-            left: 30px;
             z-index: -1;
-            font-size: 18px;
+            font-size: 0px;
+          }
+
+          .show-file-info {
+            position: absolute;
+            left: 190px;
+            color: #d81b60;
           }
 
           label {
