@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { loadAction } from '../../../store/actions';
+import TagsConstructor from './TagsConstructor/index';
 
 const inputStyle = {
   padding: '14px',
@@ -12,11 +18,10 @@ const inputStyle = {
 };
 
 const loadSchema = Yup.object().shape({
-  title: Yup.string()
+  name: Yup.string()
     .min(2, 'Too Short')
     .max(50, 'Too Long')
     .required('*Required field'),
-  // tags: Yup.array().of(Yup.string().min(1)),
 });
 
 function removeServerError(error, field, errorsObj, callback) {
@@ -25,9 +30,19 @@ function removeServerError(error, field, errorsObj, callback) {
   }
 }
 
-function LoadForm({ load }) {
+function LoadForm({ load, owner }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
   const [loadErrors, setloadErrors] = useState({});
+  const [tags, setTags] = useState([]);
+  const [name, setName] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileError, setFileError] = useState('');
+
+  const onChangeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setFileError('');
+  };
+
   return (
     <div className="form-container">
       <div className="form-heading">
@@ -44,16 +59,31 @@ function LoadForm({ load }) {
 
       <Formik
         initialValues={{
-          title: '',
+          name,
+          tags,
+          file: selectedFile,
+          owner,
         }}
         validationSchema={loadSchema}
+        enableReinitialize
         onSubmit={(values, { setSubmitting }) => {
-          setLoaderDisplay('inline');
-          load({ values, setLoaderDisplay, setloadErrors });
-          setSubmitting(false);
+          if (selectedFile !== null) {
+            setLoaderDisplay('inline');
+            load({
+              values,
+              setLoaderDisplay,
+              setloadErrors,
+              setName,
+              setTags,
+              setSelectedFile,
+            });
+            setSubmitting(false);
+          } else {
+            setFileError('Choose an image');
+          }
         }}
       >
-        {({ isSubmitting, errors }) => (
+        {({ isSubmitting, errors, values }) => (
           <Form>
             <div className="fields-container">
               <div className="input-wrapper">
@@ -61,7 +91,8 @@ function LoadForm({ load }) {
                   placeholder="Photo's title"
                   style={inputStyle}
                   type="text"
-                  name="title"
+                  name="name"
+                  onChange={(e) => setName(e.target.value)}
                   autoComplete="on"
                   innerRef={() => {
                     removeServerError(
@@ -74,10 +105,29 @@ function LoadForm({ load }) {
                 />
                 <ErrorMessage
                   className="error-text"
-                  name="title"
+                  name="name"
                   component="span"
                 />
                 <span className="error-text">{loadErrors.titleError}</span>
+              </div>
+              <div className="input-wrapper">
+                <TagsConstructor handleChange={setTags} tags={values.tags} />
+                <span className="error-text">{loadErrors.tagsError}</span>
+              </div>
+              <div className="input-container file-container">
+                <label htmlFor="file-input">
+                  Choose a photo
+                  <input
+                    className="inputfile"
+                    id="file-input"
+                    type="file"
+                    name="file"
+                    onChange={onChangeHandler}
+                  />
+                </label>
+                <span style={{ display: 'block' }} className="error-text">
+                  {loadErrors.photoError || fileError}
+                </span>
               </div>
             </div>
             <button type="submit" disabled={isSubmitting}>
@@ -96,6 +146,45 @@ function LoadForm({ load }) {
       </div>
       <style jsx>
         {`
+          .inputfile {
+            overflow: hidden;
+            position: absolute;
+            top: 20%;
+            left: 30px;
+            z-index: -1;
+            font-size: 18px;
+          }
+
+          label {
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background-color: #070943;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            height: 48px;
+            width: 180px;
+            padding: 8px 10px;
+            border: 2px solid #070943;
+            transition: background 0.25s;
+          }
+
+          label * {
+            pointer-events: none;
+          }
+
+          label:hover {
+            background: white;
+            color: #070943;
+          }
+
+          .file-container {
+            position: relative;
+            margin-top: 16px;
+          }
+
           .fields-container {
             display: flex;
             flex-direction: column;
@@ -138,10 +227,10 @@ function LoadForm({ load }) {
             max-width: 500px;
             width: 100%;
             position: absolute;
-            top: 50%;
+            top: 53%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 20;
+            z-index: 9;
             background: white;
             padding: 32px 32px;
             border-radius: 8px;
@@ -182,6 +271,11 @@ function LoadForm({ load }) {
 
 LoadForm.propTypes = {
   load: PropTypes.func.isRequired,
+  owner: PropTypes.string,
+};
+
+LoadForm.defaultProps = {
+  owner: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({
