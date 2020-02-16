@@ -115,11 +115,11 @@ exports.unlikePhoto = (req, res) => {
 
 exports.incrementPhotoView = (req, res) => {
   db.collection('photos')
-    .doc(req.body.photoId)
+    .doc(req.query.photoId)
     .get()
     .then((doc) => {
       db.collection('photos')
-        .doc(req.body.photoId)
+        .doc(req.query.photoId)
         .update({
           views: parseInt(doc.data().views, 10) + 1,
         });
