@@ -11,23 +11,38 @@ export default function HeaderSearch() {
   const [display, setDisplay] = useState('none');
   const [searchError, setSearchError] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [isUserTyping, setIsUserTyping] = useState(true);
+
+  const fetchSearch = React.useCallback(async () => {
+    const data = await fetch(`${REACT_APP_API}/getPhotosByTag?tag=${searchText}`);
+    const fetchedSearchResults = await data.json();
+    if (Array.isArray(fetchedSearchResults)) {
+      setDisplay('block');
+      setSearchResults(fetchedSearchResults);
+    } else {
+      setSearchError(fetchedSearchResults.error);
+    }
+  }, [searchText]);
+
+  // Debounce search fetching for 1.2s.
+  useEffect(() => {
+    if (searchText) {
+      setIsUserTyping(true);
+      setTimeout(() => {
+        setIsUserTyping(false);
+      }, 1200);
+    }
+  }, [searchText]);
 
   useEffect(() => {
     if (searchText) {
-      fetch(`${REACT_APP_API}/getPhotosByTag?tag=${searchText}`)
-        .then((data) => data.json())
-        .then((fetchedSearchResults) => {
-          if (Array.isArray(fetchedSearchResults)) {
-            setDisplay('block');
-            setSearchResults(fetchedSearchResults);
-          } else {
-            setSearchError(fetchedSearchResults.error);
-          }
-        });
+      if (!isUserTyping) {
+        fetchSearch();
+      }
     } else {
       setDisplay('none');
     }
-  }, [searchText]);
+  }, [searchText, isUserTyping, fetchSearch]);
 
   return (
     <OutsideClickHandler
@@ -55,6 +70,7 @@ export default function HeaderSearch() {
           searchError={searchError}
           searchResults={searchResults}
           setSearchText={setSearchText}
+          isUserTyping={(isUserTyping && searchText.length > 0)}
         />
         <style jsx>
           {`
