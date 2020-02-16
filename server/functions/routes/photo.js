@@ -171,7 +171,8 @@ exports.uploadPhoto = (req, res) => {
   // eslint-disable-next-line consistent-return
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-      return res.status(400).json({ error: 'Wrong file type submitted' });
+      errors.photoError = 'Wrong file type submitted';
+      return res.status(400).json({ errors });
     }
 
     link = new Date().getTime() + filename;
