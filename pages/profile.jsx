@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { connect } from 'react-redux';
+import { guardAuthPage } from '../utils';
 import Header from '../shared/Header/index';
 import Card from '../ui_components/Card/index';
 import Controls from '../components/ProfilePage/Controls/index';
@@ -24,6 +25,7 @@ async function fetchPhotos(userId) {
 }
 
 function Profile({ userPhotos, favouritePhotos, userId }) {
+  guardAuthPage();
   const [photos, setPhotos] = useState(userPhotos || []);
   const [favourites, setFavourites] = useState(favouritePhotos || []);
   const [loading, setLoading] = useState(!userId);// false

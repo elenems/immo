@@ -1,12 +1,17 @@
 import React from 'react';
 import Header from '../shared/Header/index';
 import LoadForm from '../components/LoadPage/LoadForm/index';
+import Card from '../ui_components/Card/index';
+import { guardAuthPage } from '../utils';
+
 
 export default function Load() {
+  guardAuthPage();
   return (
     <div className="load-page">
       <div className="overlay" />
       <Header />
+      <Card />
       <LoadForm />
       <style jsx>
         {`
