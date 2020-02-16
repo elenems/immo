@@ -114,16 +114,16 @@ function* unlikePhotoSaga(action) {
 }
 
 function* loadPhotoSaga(action) {
-  const { tags, title, file, owner } = yield action.payload.values;
+  const { tags, name, file, owner } = yield action.payload.values;
   const data = new FormData();
   data.append('file', file);
-  const link = `${REACT_APP_API}/uploadPhoto?title=${title}&tags=${tags}&owner=${owner}`;
+  const link = `${REACT_APP_API}/uploadPhoto?name=${name}&tags=${tags}&owner=${owner}`;
   try {
     const res = yield call(() => axios.post(link, data));
     const { message } = res.data;
     yield put({ type: T.LOAD_PHOTO_SUCCESS, payload: message });
     action.payload.setLoaderDisplay('none');
-    action.payload.setTitle('');
+    action.payload.setName('');
     action.payload.setTags([]);
     document.getElementById('file-input').value = '';
     action.payload.setloadErrors({});
