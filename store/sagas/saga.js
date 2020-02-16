@@ -127,6 +127,7 @@ function* loadPhotoSaga(action) {
     action.payload.setTags([]);
     document.getElementById('file-input').value = '';
     action.payload.setloadErrors({});
+    action.payload.setSelectedFile(null);
     yield handleCardDisppay(message, 'success');
   } catch (e) {
     yield put({ type: T.LOAD_PHOTO_FAIL, payload: e.response.data.error });
