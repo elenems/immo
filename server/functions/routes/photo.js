@@ -202,7 +202,7 @@ exports.uploadPhoto = (req, res) => {
       }))
       .catch(() => res
         .status(500)
-        .json({ error: 'Something went wrong, please try again later' }));
+        .json({ ...errors, error: 'Something went wrong, please try again later' }));
   });
   busboy.end(req.rawBody);
 };
@@ -224,7 +224,7 @@ exports.getUserPhotos = (req, res) => {
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
-        return res.status(400).json({ error: 'Not found' });
+        return res.status(200).json({ photos: [] });
       }
       snapshot.forEach((doc) => {
         photos.push({
