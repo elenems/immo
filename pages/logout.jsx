@@ -1,8 +1,10 @@
 import React from 'react';
+import { guardAuthPage } from '../utils';
 import LogoutBlock from '../components/LogoutPage/LogoutBlock/index';
 import Header from '../shared/Header/index';
 
 export default function Join() {
+  guardAuthPage();
   return (
     <div className="auth-page">
       <div className="overlay" />

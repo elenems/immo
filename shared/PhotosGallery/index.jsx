@@ -4,9 +4,12 @@ import Photo from './Photo/index';
 import './index.scss';
 
 function PhotosGallery({ photos, imageWidth }) {
+  const photosList = photos.map((photo) => (
+    <Photo key={photo.id} photo={photo} />
+  ));
   return (
     <div className="photos-gallery">
-      {photos.map((photo) => <Photo key={photo.id} photo={photo} />)}
+      {photos.length ? photosList : <div className="empty-list">No photos</div>}
       <style jsx>
         {`
           div {
@@ -14,6 +17,11 @@ function PhotosGallery({ photos, imageWidth }) {
               auto-fill,
               minmax(${imageWidth}px, 1fr)
             );
+          }
+
+          .empty-list {
+            font-weight: 600;
+            font-size: 20px;
           }
         `}
       </style>

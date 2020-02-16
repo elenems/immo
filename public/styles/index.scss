@@ -75,3 +75,9 @@ h4 {
   animation-duration: 3s;
   animation-delay: 0.5s;
 }
+
+.appear {
+  opacity: 1;
+  animation-name: $animation-opacity-in;
+  animation-duration: 0.5s;
+}

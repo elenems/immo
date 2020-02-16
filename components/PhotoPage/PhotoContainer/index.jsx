@@ -41,10 +41,11 @@ function PhotoContainer({
             max-width: 430px;
             min-width: 200px;
             width: 100%;
-            max-height: 530px;
             min-height: 220px;
           }
-
+          .photo {
+            cursor: default;
+          }
           img {
             width: 100%;
             height: 100%;

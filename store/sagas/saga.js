@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
 import { all, takeLatest, call, put, delay } from 'redux-saga/effects';
 import axios from 'axios';
 import Router from 'next/router';
 import { actionTypes as T } from '../actions';
+
 const { REACT_APP_API } = process.env;
 
 function* handleCardDisppay(message, type) {
@@ -25,7 +27,7 @@ function* joinUserSaga(action) {
     if (process.browser) {
       // eslint-disable-next-line no-undef
       sessionStorage.setItem('token', token);
-      Router.push('/');
+      Router.push('/profile');
     }
   } catch (e) {
     const error = e.response.data;
@@ -46,7 +48,7 @@ function* loginUserSaga(action) {
     if (process.browser) {
       // eslint-disable-next-line no-undef
       sessionStorage.setItem('token', token);
-      Router.push('/');
+      Router.push('/profile');
     }
   } catch (e) {
     const error = e.response.data;
@@ -111,6 +113,32 @@ function* unlikePhotoSaga(action) {
   }
 }
 
+function* loadPhotoSaga(action) {
+  const { tags, name, file, owner } = yield action.payload.values;
+  const data = new FormData();
+  data.append('file', file);
+  const link = `${REACT_APP_API}/uploadPhoto?name=${name}&tags=${tags}&owner=${owner}`;
+  try {
+    const res = yield call(() => axios.post(link, data));
+    const { message } = res.data;
+    yield put({ type: T.LOAD_PHOTO_SUCCESS, payload: message });
+    action.payload.setLoaderDisplay('none');
+    action.payload.setName('');
+    action.payload.setTags([]);
+    document.getElementById('file-input').value = '';
+    action.payload.setloadErrors({});
+    action.payload.setSelectedFile(null);
+    yield handleCardDisppay(message, 'success');
+  } catch (e) {
+    yield put({ type: T.LOAD_PHOTO_FAIL, payload: e.response.data.error });
+    action.payload.setSelectedFile(null);
+    action.payload.setloadErrors(e.response.data.errors);
+    action.payload.setLoaderDisplay('none');
+    document.getElementById('file-input').value = '';
+    yield handleCardDisppay("Couldn't upload photo", 'fail');
+  }
+}
+
 function* rootSaga() {
   yield all([
     takeLatest(T.JOIN, joinUserSaga),
@@ -119,6 +147,7 @@ function* rootSaga() {
     takeLatest(T.ADD_PHOTO_TO_FAVOURITE, likePhotoSaga),
     takeLatest(T.REMOVE_PHOTO_FROM_FAVOURITE, unlikePhotoSaga),
     takeLatest(T.LOG_OUT, logoutUserSaga),
+    takeLatest(T.LOAD_PHOTO, loadPhotoSaga),
   ]);
 }
 

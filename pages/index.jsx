@@ -29,9 +29,8 @@ Index.defaultProps = {
 };
 
 Index.getInitialProps = async () => {
-  const res = await fetch(
-    'https://europe-west2-immo-764e3.cloudfunctions.net/api/getPhotos',
-  );
+  const API = process.env.REACT_APP_API;
+  const res = await fetch(`${API}/getPhotos`);
   const json = await res.json();
   return { photos: json };
 };

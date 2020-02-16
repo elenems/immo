@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import Header from '../../shared/Header/index';
@@ -6,6 +6,7 @@ import Card from '../../ui_components/Card/index';
 import PhotoContainer from '../../components/PhotoPage/PhotoContainer/index';
 import PhotosGallery from '../../shared/PhotosGallery/index';
 
+const { REACT_APP_API } = process.env;
 function Photo({
   photo: {
     url,
@@ -17,6 +18,11 @@ function Photo({
   user: { firstName, lastName, email },
   relatedPhotos,
 }) {
+  useEffect(() => {
+    fetch(`${REACT_APP_API}/addView?photoId=${id}`, {
+      method: 'POST',
+    });
+  }, [id]);
   return (
     <div>
       <Header />
@@ -42,7 +48,6 @@ function Photo({
           .container {
             display: flex;
             padding-top: 100px;
-            justify-content: space-between;
           }
 
           .related-block {
@@ -56,8 +61,9 @@ function Photo({
             }
 
             .related-block {
-              margin-top: 80px;
+              margin-top: 10px;
               margin-left: 0px;
+              align-self: self-start;
             }
           }
         `}
@@ -77,7 +83,7 @@ Photo.defaultProps = {
 };
 
 Photo.getInitialProps = async (context) => {
-  const API = 'https://europe-west2-immo-764e3.cloudfunctions.net/api';
+  const API = process.env.REACT_APP_API;
   const photoId = context.ctx.query.id;
   const urlToFetchImage = `${API}/getPhoto?photoId=${photoId}`;
   const res = await fetch(urlToFetchImage);

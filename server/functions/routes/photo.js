@@ -115,11 +115,11 @@ exports.unlikePhoto = (req, res) => {
 
 exports.incrementPhotoView = (req, res) => {
   db.collection('photos')
-    .doc(req.body.photoId)
+    .doc(req.query.photoId)
     .get()
     .then((doc) => {
       db.collection('photos')
-        .doc(req.body.photoId)
+        .doc(req.query.photoId)
         .update({
           views: parseInt(doc.data().views, 10) + 1,
         });
@@ -149,8 +149,12 @@ exports.uploadPhoto = (req, res) => {
   let link = null;
   const errors = {};
 
-  if (!req.query.title.length) {
+  if (!req.query.name.length) {
     errors.titleError = 'Must not be empty';
+  }
+
+  if (!req.query.tags.length) {
+    errors.tagsError = 'Add at least one tag';
   }
 
   if (Object.keys(errors).length > 0) {
@@ -162,11 +166,13 @@ exports.uploadPhoto = (req, res) => {
   photoInfo.likesCount = 0;
   photoInfo.views = 0;
   photoInfo.date = new Date().toUTCString();
+  photoInfo.tags = photoInfo.tags.split(',');
 
   // eslint-disable-next-line consistent-return
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-      return res.status(400).json({ error: 'Wrong file type submitted' });
+      errors.photoError = 'Wrong file type submitted';
+      return res.status(400).json({ errors });
     }
 
     link = new Date().getTime() + filename;
@@ -188,15 +194,15 @@ exports.uploadPhoto = (req, res) => {
         },
       })
       .then(() => {
-        link = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/photos/o/${link}?alt=media`;
-        db.collection('photos').add({ image: link, ...photoInfo });
+        link = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${link}?alt=media`;
+        db.collection('photos').add({ url: link, ...photoInfo });
       })
       .then(() => res.status(200).json({
-        message: 'Photo has been added successfuly',
+        message: 'Photo has been uploaded successfuly',
       }))
       .catch(() => res
         .status(500)
-        .json({ error: 'Something went wrong, please try again later' }));
+        .json({ ...errors, error: 'Something went wrong, please try again later' }));
   });
   busboy.end(req.rawBody);
 };
@@ -218,7 +224,7 @@ exports.getUserPhotos = (req, res) => {
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
-        return res.status(400).json({ error: 'Not found' });
+        return res.status(200).json({ photos: [] });
       }
       snapshot.forEach((doc) => {
         photos.push({

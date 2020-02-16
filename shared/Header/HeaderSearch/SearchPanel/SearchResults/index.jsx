@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-function SearchResults({ searchResults, error }) {
+function SearchResults({ searchResults, error, isUserTyping }) {
+  const progress = isUserTyping ? (
+    <span style={{ display: 'block', textAlign: 'center' }}>
+      <img src="/svg/three-dots.svg" alt="Loading..." />
+    </span>
+  ) : (
+    <span className="appear">No results</span>
+  );
   return (
     <div>
       {searchResults.length ? (
@@ -19,13 +26,17 @@ function SearchResults({ searchResults, error }) {
           ))}
         </ul>
       ) : (
-        <p>{error || 'No results'}</p>
+        <p>{error ? <span className="appear">{error}</span> : progress}</p>
       )}
       <style jsx>
         {`
           img {
             width: 50px;
             jeight: 50px;
+          }
+
+          p {
+            margin-top: 10px;
           }
 
           .search-result {
@@ -55,6 +66,7 @@ function SearchResults({ searchResults, error }) {
 SearchResults.propTypes = {
   searchResults: PropTypes.array,
   error: PropTypes.string,
+  isUserTyping: PropTypes.bool.isRequired,
 };
 
 SearchResults.defaultProps = {

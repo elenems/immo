@@ -8,7 +8,7 @@ export default function Presentation() {
         {`
           div {
             margin-top: 60px;
-            height: 600px;
+            height: 636px;
             background-repeat: no-repeat;
             display: flex;
             align-items: center;
