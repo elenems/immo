@@ -6,6 +6,8 @@
   & > div {
     margin: 4px;
     transition: transform 0.25s;
+    display: flex;
+    align-items: center;
     img {
       width: 100%;
       height: auto;
