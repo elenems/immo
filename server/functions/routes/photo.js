@@ -194,8 +194,8 @@ exports.uploadPhoto = (req, res) => {
         },
       })
       .then(() => {
-        link = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/photos/o/${link}?alt=media`;
-        db.collection('photos').add({ image: link, ...photoInfo });
+        link = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${link}?alt=media`;
+        db.collection('photos').add({ url: link, ...photoInfo });
       })
       .then(() => res.status(200).json({
         message: 'Photo has been added successfuly',
