@@ -153,6 +153,10 @@ exports.uploadPhoto = (req, res) => {
     errors.titleError = 'Must not be empty';
   }
 
+  if (!req.query.tags.length) {
+    errors.tagsError = 'Add at least one tag';
+  }
+
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({ errors });
   }
@@ -162,6 +166,7 @@ exports.uploadPhoto = (req, res) => {
   photoInfo.likesCount = 0;
   photoInfo.views = 0;
   photoInfo.date = new Date().toUTCString();
+  photoInfo.tags = photoInfo.tags.split(',');
 
   // eslint-disable-next-line consistent-return
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
