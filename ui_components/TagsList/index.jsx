@@ -9,11 +9,15 @@ function TagsList({ tags, color }) {
       ))}
       <style jsx>
         {`
+          div {
+            display: flex;
+            flex-wrap: wrap;
+          }
           span {
             font-size: 16px;
             font-weight: 700;
             color: ${color};
-            margin: 6px;
+            margin-right: 8px;
           }
           span:first-child {
             margin-left: 0px;
