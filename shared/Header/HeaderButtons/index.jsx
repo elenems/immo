@@ -10,7 +10,7 @@ const redirectTo = (page) => {
 };
 
 function HeaderButtons({ isAuthenticated }) {
-  const page = isAuthenticated ? '/profile' : '/login';
+  const page = isAuthenticated ? '/load' : '/login';
   return (
     <div>
       <div className="header-controls">
