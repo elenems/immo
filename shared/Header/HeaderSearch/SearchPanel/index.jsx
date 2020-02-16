@@ -8,10 +8,15 @@ function SearchPanel({
   searchError,
   display,
   setSearchText,
+  isUserTyping,
 }) {
   return (
     <div className="search-panel">
-      <SearchResults searchResults={searchResults} searchError={searchError} />
+      <SearchResults
+        isUserTyping={isUserTyping}
+        searchResults={searchResults}
+        searchError={searchError}
+      />
       <TagsList setSearchText={setSearchText} />
       <style jsx>
         {`
@@ -39,6 +44,7 @@ SearchPanel.propTypes = {
   searchError: PropTypes.string,
   display: PropTypes.string.isRequired,
   setSearchText: PropTypes.func.isRequired,
+  isUserTyping: PropTypes.bool.isRequired,
 };
 
 SearchPanel.defaultProps = {
