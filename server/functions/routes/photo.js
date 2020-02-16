@@ -198,7 +198,7 @@ exports.uploadPhoto = (req, res) => {
         db.collection('photos').add({ url: link, ...photoInfo });
       })
       .then(() => res.status(200).json({
-        message: 'Photo has been added successfuly',
+        message: 'Photo has been uploaded successfuly',
       }))
       .catch(() => res
         .status(500)
