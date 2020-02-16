@@ -48,7 +48,6 @@ function Photo({
           .container {
             display: flex;
             padding-top: 100px;
-            justify-content: space-between;
           }
 
           .related-block {
