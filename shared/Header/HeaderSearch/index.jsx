@@ -61,7 +61,7 @@ export default function HeaderSearch() {
               setDisplay('block');
             }}
           />
-          <button type="button">
+          <button onClick={fetchSearch} type="button">
             <MdSearch />
           </button>
         </div>
