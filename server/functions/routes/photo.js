@@ -149,7 +149,7 @@ exports.uploadPhoto = (req, res) => {
   let link = null;
   const errors = {};
 
-  if (!req.query.title.length) {
+  if (!req.query.name.length) {
     errors.titleError = 'Must not be empty';
   }
 
