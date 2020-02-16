@@ -2,8 +2,10 @@ import React from 'react';
 import AuthHeader from '../shared/AuthHeader/index';
 import CustomLink from '../ui_components/CustomLink/index';
 import LoginForm from '../components/LoginPage/LoginForm/index';
+import { redirectFromAuthPage } from '../utils';
 
 export default function Join() {
+  redirectFromAuthPage();
   return (
     <div className="auth-page">
       <div className="overlay" />
