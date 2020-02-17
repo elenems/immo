@@ -5,4 +5,7 @@ module.exports = {
     REACT_APP_API: 'https://europe-west2-immo-764e3.cloudfunctions.net/api',
   },
   ...withSass(),
+  devIndicators: {
+    autoPrerender: false,
+  },
 };
