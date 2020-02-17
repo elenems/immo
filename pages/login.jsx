@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import AuthHeader from '../shared/AuthHeader/index';
 import CustomLink from '../ui_components/CustomLink/index';
 import LoginForm from '../components/LoginPage/LoginForm/index';
@@ -8,6 +9,13 @@ export default function Join() {
   redirectFromAuthPage();
   return (
     <div className="auth-page">
+      <Head>
+        <title>Immo | Welcome!</title>
+        <meta
+          name="Description"
+          content="Login to your profile."
+        />
+      </Head>
       <div className="overlay" />
       <AuthHeader>
         <div className="switch">

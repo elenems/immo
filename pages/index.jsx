@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetch from 'isomorphic-unfetch';
@@ -10,6 +11,11 @@ import Card from '../ui_components/Card/index';
 function Index({ photos }) {
   return (
     <div>
+      <Head>
+        <title>Immo | Browse photos</title>
+        <meta name="Description" content="Browse thousands of creative photos, made by talanted photographers." />
+        <meta charset="utf-8" key="charset" />
+      </Head>
       <Header />
       <Card />
       <Presentation />
