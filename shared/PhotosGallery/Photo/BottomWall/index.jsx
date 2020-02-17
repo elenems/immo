@@ -22,12 +22,11 @@ function BottomWall({ tags, photoId, views }) {
       <style jsx>
         {`
           .photo-bottom-wall {
-            bottom: 5px;
             padding: 12px;
             width: 100%;
             background: rgba(25, 25, 25, 0.25);
+            display: flex;
             justify-content: flex-end;
-            align-items: center;
           }
 
           .views {

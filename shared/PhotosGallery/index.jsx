@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Photo from './Photo/index';
-import './index.scss';
 
 function PhotosGallery({ photos, imageWidth }) {
   const photosList = photos.map((photo) => (
@@ -13,6 +12,8 @@ function PhotosGallery({ photos, imageWidth }) {
       <style jsx>
         {`
           div {
+            display: grid;
+            grid-gap: 10px;
             grid-template-columns: repeat(
               auto-fill,
               minmax(${imageWidth}px, 1fr)
