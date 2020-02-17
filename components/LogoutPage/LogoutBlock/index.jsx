@@ -44,7 +44,7 @@ function LogoutBlock({ logout }) {
           .logout-heading p {
             font-size: 18px;
             margin-top: 12px;
-            color: #787878;
+            color: #737372;
           }
 
           h1 {

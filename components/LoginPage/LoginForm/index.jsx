@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -50,12 +51,10 @@ function LoginForm({ login }) {
       </div>
 
       <Formik
-        initialValues={
-          {
-            email: '',
-            password: '',
-          }
-        }
+        initialValues={{
+          email: '',
+          password: '',
+        }}
         validationSchema={loginSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
@@ -67,21 +66,26 @@ function LoginForm({ login }) {
           <Form>
             <div className="fields-container">
               <div className="input-wrapper">
-                <Field
-                  placeholder="Email"
-                  style={inputStyle}
-                  type="email"
-                  name="email"
-                  autoComplete="on"
-                  innerRef={() => {
-                    removeServerError(
-                      errors.email,
-                      'emailError',
-                      loginErrors,
-                      setLoginErrors,
-                    );
-                  }}
-                />
+                <label htmlFor="email" className="hide-label-text">
+                  Enter email
+                  <Field
+                    id="email"
+                    placeholder="Email"
+                    style={inputStyle}
+                    type="email"
+                    name="email"
+                    autoComplete="on"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.email,
+                        'emailError',
+                        loginErrors,
+                        setLoginErrors,
+                      );
+                    }}
+                  />
+                </label>
+
                 <ErrorMessage
                   className="error-text"
                   name="email"
@@ -90,21 +94,24 @@ function LoginForm({ login }) {
                 <span className="error-text">{loginErrors.emailError}</span>
               </div>
               <div className="input-wrapper">
-                <Field
-                  placeholder="Password"
-                  style={inputStyle}
-                  type="password"
-                  name="password"
-                  autoComplete="cc-csc"
-                  innerRef={() => {
-                    removeServerError(
-                      errors.password,
-                      'passwordError',
-                      loginErrors,
-                      setLoginErrors,
-                    );
-                  }}
-                />
+                <label htmlFor="password" className="hide-label-text">
+                  Enter password
+                  <Field
+                    placeholder="Password"
+                    style={inputStyle}
+                    type="password"
+                    name="password"
+                    autoComplete="cc-csc"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.password,
+                        'passwordError',
+                        loginErrors,
+                        setLoginErrors,
+                      );
+                    }}
+                  />
+                </label>
                 <ErrorMessage
                   className="error-text"
                   name="password"
@@ -175,7 +182,7 @@ function LoginForm({ login }) {
           .form-heading p {
             font-size: 18px;
             margin-top: 12px;
-            color: #787878;
+            color: #737372;
           }
 
           h1 {
