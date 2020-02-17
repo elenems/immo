@@ -23,7 +23,7 @@ function Photo({ photo }) {
 
           .show-on-hover {
             position: absolute;
-            display: block;
+            display: none;
             bottom: 5px;
             width: 100%;
           }
