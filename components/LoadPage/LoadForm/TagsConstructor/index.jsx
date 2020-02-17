@@ -48,13 +48,17 @@ function TagsConstructor({ tags, handleChange }) {
         ))}
       </div>
       <div className="input-with-button">
-        <input
-          name="tag-input"
-          placeholder="Tag name"
-          type="text"
-          value={tagName}
-          onChange={(e) => inputTag(e.target.value, setTagName, setError)}
-        />
+        <label htmlFor="tag-name" className="hide-label-text">
+          Enter a tag
+          <input
+            id="tag-name"
+            name="tag-input"
+            placeholder="Tag name"
+            type="text"
+            value={tagName}
+            onChange={(e) => inputTag(e.target.value, setTagName, setError)}
+          />
+        </label>
         <button
           title="Add"
           name="tags"

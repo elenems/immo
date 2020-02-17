@@ -52,16 +52,24 @@ export default function HeaderSearch() {
     >
       <div className="header-search">
         <div className="search-field">
-          <input
-            type="text"
-            value={searchText}
-            placeholder="Search for photos"
-            onChange={(e) => setSearchText(e.target.value)}
-            onFocus={() => {
-              setDisplay('block');
-            }}
-          />
-          <button onClick={fetchSearch} type="button">
+          <label className="hide-label-text" htmlFor="search-input">
+            Enter a tag to load matched photos
+            <input
+              id="search-input"
+              type="text"
+              value={searchText}
+              placeholder="Search for photos"
+              onChange={(e) => setSearchText(e.target.value)}
+              onFocus={() => {
+                setDisplay('block');
+              }}
+            />
+          </label>
+          <button
+            aria-label="Load search results"
+            onClick={fetchSearch}
+            type="button"
+          >
             <MdSearch />
           </button>
         </div>
@@ -70,7 +78,7 @@ export default function HeaderSearch() {
           searchError={searchError}
           searchResults={searchResults}
           setSearchText={setSearchText}
-          isUserTyping={(isUserTyping && searchText.length > 0)}
+          isUserTyping={isUserTyping && searchText.length > 0}
         />
         <style jsx>
           {`

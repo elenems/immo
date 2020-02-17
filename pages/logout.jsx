@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { guardAuthPage } from '../utils';
 import LogoutBlock from '../components/LogoutPage/LogoutBlock/index';
 import Header from '../shared/Header/index';
@@ -7,6 +8,10 @@ export default function Join() {
   guardAuthPage();
   return (
     <div className="auth-page">
+      <Head>
+        <title>Immo | Logout</title>
+        <meta name="Description" content="Logout Immo" />
+      </Head>
       <div className="overlay" />
       <Header />
       <LogoutBlock />

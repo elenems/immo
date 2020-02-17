@@ -81,3 +81,8 @@ h4 {
   animation-name: $animation-opacity-in;
   animation-duration: 0.5s;
 }
+
+.hide-label-text {
+  font-size: 0px;
+  width: 95%;
+}

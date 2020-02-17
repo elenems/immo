@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -86,22 +87,26 @@ function LoadForm({ load, owner }) {
           <Form>
             <div className="fields-container">
               <div className="input-wrapper">
-                <Field
-                  placeholder="Photo's title"
-                  style={inputStyle}
-                  type="text"
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                  autoComplete="on"
-                  innerRef={() => {
-                    removeServerError(
-                      errors.title,
-                      'titleError',
-                      loadErrors,
-                      setloadErrors,
-                    );
-                  }}
-                />
+                <label htmlFor="photo-name" className="hide-label-text">
+                  Enter name of your photo
+                  <Field
+                    id="photo-name"
+                    placeholder="Photo's name"
+                    style={inputStyle}
+                    type="text"
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                    autoComplete="on"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.title,
+                        'titleError',
+                        loadErrors,
+                        setloadErrors,
+                      );
+                    }}
+                  />
+                </label>
                 <ErrorMessage
                   className="error-text"
                   name="name"
@@ -114,7 +119,7 @@ function LoadForm({ load, owner }) {
                 <span className="error-text">{loadErrors.tagsError}</span>
               </div>
               <div className="input-container file-container">
-                <label htmlFor="file-input">
+                <label htmlFor="file-input" className="file-label">
                   Choose a photo
                   <input
                     className="inputfile"
@@ -162,7 +167,7 @@ function LoadForm({ load, owner }) {
             color: #d81b60;
           }
 
-          label {
+          .file-label {
             cursor: pointer;
             font-size: 18px;
             font-weight: 600;
@@ -178,11 +183,11 @@ function LoadForm({ load, owner }) {
             transition: background 0.25s;
           }
 
-          label * {
+          .file-label * {
             pointer-events: none;
           }
 
-          label:hover {
+          file-label:hover {
             background: white;
             color: #070943;
           }
@@ -246,7 +251,7 @@ function LoadForm({ load, owner }) {
           .form-heading p {
             font-size: 18px;
             margin-top: 12px;
-            color: #787878;
+            color: #737372;
           }
 
           strong {

@@ -1,14 +1,18 @@
 import React from 'react';
+import Head from 'next/head';
 import Header from '../shared/Header/index';
 import LoadForm from '../components/LoadPage/LoadForm/index';
 import Card from '../ui_components/Card/index';
 import { guardAuthPage } from '../utils';
 
-
 export default function Load() {
   guardAuthPage();
   return (
     <div className="load-page">
+      <Head>
+        <title>Immo | Upload your photo</title>
+        <meta name="Description" content="Upload your photo." />
+      </Head>
       <div className="overlay" />
       <Header />
       <Card />

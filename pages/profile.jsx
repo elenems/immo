@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { connect } from 'react-redux';
@@ -44,6 +45,10 @@ function Profile({ userPhotos, favouritePhotos, userId }) {
   }, [userId, userPhotos, favouritePhotos]);
   return (
     <div>
+      <Head>
+        <title>Immo | Welcome to profile</title>
+        <meta name="Description" content="Upload your photo." />
+      </Head>
       <Header />
       <Card />
       <div className="container">

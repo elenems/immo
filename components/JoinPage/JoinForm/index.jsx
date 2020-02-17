@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -57,14 +58,12 @@ function JoinForm({ join }) {
       </div>
 
       <Formik
-        initialValues={
-          {
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-          }
-        }
+        initialValues={{
+          email: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+        }}
         validationSchema={joinSchema}
         onSubmit={(values, { setSubmitting }) => {
           setLoaderDisplay('inline');
@@ -77,21 +76,24 @@ function JoinForm({ join }) {
             <div className="fields-container">
               <div className="two-inputs-container">
                 <div className="input-wrapper">
-                  <Field
-                    placeholder="First name"
-                    style={inputStyle}
-                    type="text"
-                    name="firstName"
-                    autoComplete="on"
-                    innerRef={() => {
-                      removeServerError(
-                        errors.firstName,
-                        'firstNameError',
-                        joinErrors,
-                        setJoinErrors,
-                      );
-                    }}
-                  />
+                  <label htmlFor="first-name" className="hide-label-text">
+                    Enter Firstname
+                    <Field
+                      placeholder="First name"
+                      style={inputStyle}
+                      type="text"
+                      name="firstName"
+                      autoComplete="on"
+                      innerRef={() => {
+                        removeServerError(
+                          errors.firstName,
+                          'firstNameError',
+                          joinErrors,
+                          setJoinErrors,
+                        );
+                      }}
+                    />
+                  </label>
                   <ErrorMessage
                     className="error-text"
                     name="firstName"
@@ -102,21 +104,25 @@ function JoinForm({ join }) {
                   </span>
                 </div>
                 <div className="input-wrapper">
-                  <Field
-                    placeholder="Last name (Optinal)"
-                    style={inputStyle}
-                    type="text"
-                    name="lastName"
-                    autoComplete="on"
-                    innerRef={() => {
-                      removeServerError(
-                        errors.lastName,
-                        'lastNameError',
-                        joinErrors,
-                        setJoinErrors,
-                      );
-                    }}
-                  />
+                  <label htmlFor="last-name" className="hide-label-text">
+                    Enter Lastname
+                    <Field
+                      id="last-name"
+                      placeholder="Last name (Optinal)"
+                      style={inputStyle}
+                      type="text"
+                      name="lastName"
+                      autoComplete="on"
+                      innerRef={() => {
+                        removeServerError(
+                          errors.lastName,
+                          'lastNameError',
+                          joinErrors,
+                          setJoinErrors,
+                        );
+                      }}
+                    />
+                  </label>
                   <ErrorMessage
                     className="error-text"
                     name="lastName"
@@ -125,21 +131,25 @@ function JoinForm({ join }) {
                 </div>
               </div>
               <div className="input-wrapper">
-                <Field
-                  placeholder="Email"
-                  style={inputStyle}
-                  type="email"
-                  name="email"
-                  autoComplete="on"
-                  innerRef={() => {
-                    removeServerError(
-                      errors.email,
-                      'emailError',
-                      joinErrors,
-                      setJoinErrors,
-                    );
-                  }}
-                />
+                <label htmlFor="email" className="hide-label-text">
+                  Enter email
+                  <Field
+                    id="email"
+                    placeholder="Email"
+                    style={inputStyle}
+                    type="email"
+                    name="email"
+                    autoComplete="on"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.email,
+                        'emailError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
+                  />
+                </label>
                 <ErrorMessage
                   className="error-text"
                   name="email"
@@ -148,21 +158,25 @@ function JoinForm({ join }) {
                 <span className="error-text">{joinErrors.emailError}</span>
               </div>
               <div className="input-wrapper">
-                <Field
-                  placeholder="Password"
-                  style={inputStyle}
-                  type="password"
-                  name="password"
-                  autoComplete="cc-csc"
-                  innerRef={() => {
-                    removeServerError(
-                      errors.password,
-                      'passwordError',
-                      joinErrors,
-                      setJoinErrors,
-                    );
-                  }}
-                />
+                <label htmlFor="password" className="hide-label-text">
+                  Enter password
+                  <Field
+                    id="password"
+                    placeholder="Password"
+                    style={inputStyle}
+                    type="password"
+                    name="password"
+                    autoComplete="cc-csc"
+                    innerRef={() => {
+                      removeServerError(
+                        errors.password,
+                        'passwordError',
+                        joinErrors,
+                        setJoinErrors,
+                      );
+                    }}
+                  />
+                </label>
                 <ErrorMessage
                   className="error-text"
                   name="password"
@@ -253,7 +267,7 @@ function JoinForm({ join }) {
           .form-heading p {
             font-size: 18px;
             margin-top: 12px;
-            color: #787878;
+            color: #737372;
           }
 
           strong {
