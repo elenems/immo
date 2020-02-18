@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MdSearch } from 'react-icons/md';
-import fetch from 'unfetch';
 import OutsideClickHandler from 'react-outside-click-handler';
 import SearchPanel from './SearchPanel/index';
-
-const { REACT_APP_API } = process.env;
+import { fetchPhotos, useDebounce, useFetchPhotosOnTyping } from './functions';
 
 export default function HeaderSearch() {
   const [searchText, setSearchText] = useState('');
@@ -13,36 +11,13 @@ export default function HeaderSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [isUserTyping, setIsUserTyping] = useState(true);
 
-  const fetchSearch = React.useCallback(async () => {
-    const data = await fetch(`${REACT_APP_API}/getPhotosByTag?tag=${searchText}`);
-    const fetchedSearchResults = await data.json();
-    if (Array.isArray(fetchedSearchResults)) {
-      setDisplay('block');
-      setSearchResults(fetchedSearchResults);
-    } else {
-      setSearchError(fetchedSearchResults.error);
-    }
-  }, [searchText]);
+  const fetchSearch = React.useCallback(
+    async () => fetchPhotos(searchText, setDisplay, setSearchResults, setSearchError),
+    [searchText],
+  );
 
-  // Debounce search fetching for 1.2s.
-  useEffect(() => {
-    if (searchText) {
-      setIsUserTyping(true);
-      setTimeout(() => {
-        setIsUserTyping(false);
-      }, 1200);
-    }
-  }, [searchText]);
-
-  useEffect(() => {
-    if (searchText) {
-      if (!isUserTyping) {
-        fetchSearch();
-      }
-    } else {
-      setDisplay('none');
-    }
-  }, [searchText, isUserTyping, fetchSearch]);
+  useDebounce(searchText, setIsUserTyping, 1200);
+  useFetchPhotosOnTyping(searchText, isUserTyping, fetchSearch, setDisplay);
 
   return (
     <OutsideClickHandler
@@ -60,9 +35,7 @@ export default function HeaderSearch() {
               value={searchText}
               placeholder="Search for photos"
               onChange={(e) => setSearchText(e.target.value)}
-              onFocus={() => {
-                setDisplay('block');
-              }}
+              onFocus={() => { setDisplay('block'); }}
             />
           </label>
           <button
