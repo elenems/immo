@@ -44,3 +44,9 @@ export const redirectFromAuthPage = () => {
     }
   }
 };
+
+export const removeServerError = (error, field, errorsObj, callback) => {
+  if (error && errorsObj[field]) {
+    callback({ ...errorsObj, [field]: '' });
+  }
+};

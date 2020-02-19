@@ -39,4 +39,4 @@ PhotosGallery.propTypes = {
   imageWidth: PropTypes.number,
 };
 
-export default PhotosGallery;
+export default React.memo(PhotosGallery);

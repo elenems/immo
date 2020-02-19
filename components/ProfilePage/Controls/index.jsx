@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import './index.scss';
 import CustomLink from '../../../ui_components/CustomLink/index';
 
 function Controls({ firstName, lastName, loading }) {
@@ -10,7 +9,7 @@ function Controls({ firstName, lastName, loading }) {
       <div className="user-greeting">
         <span>{!loading ? `Hello ${firstName} ${lastName}` : null}</span>
       </div>
-      <div>
+      <div className="link-container">
         <CustomLink
           text="Load photo"
           color="#d81b60"
@@ -18,7 +17,7 @@ function Controls({ firstName, lastName, loading }) {
           href="/load"
         />
       </div>
-      <div>
+      <div className="link-container">
         <CustomLink
           text="Logout"
           color="#d81b60"
@@ -42,6 +41,10 @@ function Controls({ firstName, lastName, loading }) {
           .profile-controls .user-greeting {
             margin-bottom: 30px;
             font-size: 18px;
+            font-weight: 500;
+          }
+
+          .profile-controls .link-container {
             font-weight: 500;
           }
         `}
