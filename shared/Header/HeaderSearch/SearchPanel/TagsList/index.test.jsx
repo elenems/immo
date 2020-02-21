@@ -18,12 +18,12 @@ describe('TagsList', () => {
 
   it('Sets search text', () => {
     const setSearchText = jest.fn();
-    render(
+    const { container } = render(
       <Provider store={store}>
         <TagsList setSearchText={setSearchText} />
       </Provider>,
     );
-    const button = document.querySelectorAll('.tag button')[0];
+    const button = container.querySelectorAll('.tag button')[0];
     fireEvent.click(button);
     const buttonsTag = button.textContent.slice(1);
     expect(setSearchText).toHaveBeenCalledTimes(1);

@@ -23,12 +23,12 @@ describe('Card', () => {
     const storeWithUi = createStore(() => ({
       ui: { text: 'Success operation', type: 'success' },
     }));
-    render(
+    const { container } = render(
       <Provider store={storeWithUi}>
         <Card />
       </Provider>,
     );
-    const card = document.querySelector('.card');
+    const card = container.querySelector('.card');
     expect(card).toBeInTheDocument();
     expect(card).toHaveStyle('display: flex');
     expect(card).toHaveTextContent('Success operation');

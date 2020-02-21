@@ -35,25 +35,25 @@ describe('SearchResults', () => {
   });
 
   it('Shows error', () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <SearchResults error="Some error" isUserTyping={false} />
       </Provider>,
     );
-    const errorElement = document.querySelector('.appear');
+    const errorElement = container.querySelector('.appear');
     expect(errorElement).toHaveTextContent('Some error');
   });
 
   it('Renders search results', () => {
     const searchResults = [{ id: 0, name: 'Bird', url: 'urlforbird' }];
-    render(
+    const { container } = render(
       <Provider store={store}>
         <SearchResults searchResults={searchResults} isUserTyping={false} />
       </Provider>,
     );
-    const renderedElement = document.querySelector('.search-result');
-    const renderedImg = document.querySelector('.search-result img');
-    const renderedText = document.querySelector('.search-result span');
+    const renderedElement = container.querySelector('.search-result');
+    const renderedImg = container.querySelector('.search-result img');
+    const renderedText = container.querySelector('.search-result span');
     expect(renderedElement).toBeInTheDocument();
     expect(renderedImg).toHaveAttribute('alt', 'Bird');
     expect(renderedImg).toHaveAttribute('src', 'urlforbird');

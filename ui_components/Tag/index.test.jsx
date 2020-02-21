@@ -14,21 +14,21 @@ import rootReducer from '../../store/reducers/rootReducer';
 describe('Tag', () => {
   const store = createStore(rootReducer);
   it('Renders', () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <Tag text="Some text" />
       </Provider>,
     );
-    fireEvent.click(document.querySelector('button'));
+    fireEvent.click(container.querySelector('button'));
   });
   it('Clicks', () => {
     const fn = jest.fn();
-    render(
+    const { container } = render(
       <Provider store={store}>
         <Tag text="Some text" clickHandler={fn} />
       </Provider>,
     );
-    const button = document.querySelector('button');
+    const button = container.querySelector('button');
     fireEvent.click(button);
     expect(fn).toHaveBeenCalledTimes(1);
   });

@@ -17,12 +17,12 @@ describe('BottomWall', () => {
   });
 
   it('Hides views if views > 999', () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <BottomWall tags={[]} photoId="0" views={1000} />
       </Provider>,
     );
-    const views = document.querySelector('.views');
+    const views = container.querySelector('.views');
     expect(views).not.toBeInTheDocument();
   });
 });

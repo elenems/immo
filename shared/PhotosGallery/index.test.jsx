@@ -19,13 +19,13 @@ describe('PhotosGallery', () => {
   });
 
   it('Sets imageWidth', () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <PhotosGallery photos={[]} imageWidth={250} />
       </Provider>,
     );
-    const container = document.querySelector('.photos-gallery');
-    expect(container).toHaveStyle({
+    const gallery = container.querySelector('.photos-gallery');
+    expect(gallery).toHaveStyle({
       'grid-template-columns': 'repeat( auto-fill, minmax(250px,1fr) )',
     });
   });
@@ -33,14 +33,14 @@ describe('PhotosGallery', () => {
   it('Renders photo with correct props', () => {
     // eslint-disable-next-line object-curly-newline
     const photos = [{ id: '0', tags: ['cat'], photoId: '0', views: 0 }];
-    render(
+    const { container } = render(
       <Provider store={store}>
         <PhotosGallery photos={photos} />
       </Provider>,
     );
-    const photo = document.querySelector('.photo');
-    const views = document.querySelector('.views span');
-    const tags = document.querySelector('.bottom-wall-tags span');
+    const photo = container.querySelector('.photo');
+    const views = container.querySelector('.views span');
+    const tags = container.querySelector('.bottom-wall-tags span');
     const tagsText = tags.textContent;
     expect(photo).toBeInTheDocument();
     expect(views).toHaveTextContent('0');

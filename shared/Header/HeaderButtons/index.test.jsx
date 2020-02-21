@@ -37,14 +37,13 @@ describe('SearchResults', () => {
     const storeWithAuth = createStore(() => ({
       auth: { isAuthenticated: true },
     }));
-    const { container, debug } = render(
+    const { container } = render(
       <Provider store={storeWithAuth}>
         <HeaderButtons isAuthenticated />
       </Provider>,
     );
     const link = getByText(container, /profile/i);
-    // eslint-disable-next-line no-undef
-    const controls = document.querySelector('.header-controls');
+    const controls = container.querySelector('.header-controls');
     expect(link).toHaveAttribute('href', '/profile');
     expect(link).toHaveAttribute('title', 'Profile');
     expect(link).toHaveTextContent('Profile');
