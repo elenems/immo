@@ -2,6 +2,7 @@
 import { call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import { actionTypes as T } from '../../actions';
+import handleCardDisplay from './uiSagas';
 import {
   addError,
   completeAuthIn,
@@ -16,7 +17,7 @@ const { REACT_APP_API } = process.env;
 
 export const joinUserSaga = function* joinUserSaga(action) {
   try {
-    const res = yield call(() => axios.post(`${REACT_APP_API}/join`, action.payload.values));
+    const res = yield call(axios.post, `${REACT_APP_API}/join`, action.payload.values);
     yield dispatchSuccess(T.JOIN_SUCCESS, T.GET_USER, action);
     completeAuthIn(res.data.token);
   } catch (e) {
@@ -26,7 +27,7 @@ export const joinUserSaga = function* joinUserSaga(action) {
 
 export const loginUserSaga = function* loginUserSaga(action) {
   try {
-    const res = yield call(() => axios.post(`${REACT_APP_API}/login`, action.payload.values));
+    const res = yield call(axios.post, `${REACT_APP_API}/login`, action.payload.values);
     yield dispatchSuccess(T.LOG_IN_SUCCESS, T.GET_USER, action);
     completeAuthIn(res.data.token);
   } catch (e) {
@@ -53,7 +54,7 @@ export const getUserSaga = function* getUserSaga(action) {
 
 export const likePhotoSaga = function* likePhotoSaga(action) {
   try {
-    const res = yield call(() => axios.post(`${REACT_APP_API}/likePhoto`, action.payload));
+    const res = yield call(axios.post, `${REACT_APP_API}/likePhoto`, action.payload);
     const ACTION = T.ADD_PHOTO_TO_FAVOURITE_SUCCESS;
     yield dispatchSuccessWithCard(res.data.message, ACTION, action.payload.photoId);
   } catch (e) {
@@ -63,7 +64,7 @@ export const likePhotoSaga = function* likePhotoSaga(action) {
 
 export const unlikePhotoSaga = function* unlikePhotoSaga(action) {
   try {
-    const res = yield call(() => axios.post(`${REACT_APP_API}/unlikePhoto`, action.payload));
+    const res = yield call(axios.post, `${REACT_APP_API}/unlikePhoto`, action.payload);
     const ACTION = T.REMOVE_PHOTO_FROM_FAVOURITE_SUCCESS;
     yield dispatchSuccessWithCard(res.data.message, ACTION, action.payload.photoId);
   } catch (e) {
@@ -83,7 +84,7 @@ export const loadPhotoSaga = function* loadPhotoSaga(action) {
   data.append('file', file);
   const link = `${REACT_APP_API}/uploadPhoto?name=${name}&tags=${tags}&owner=${owner}`;
   try {
-    const res = yield call(() => axios.post(link, data));
+    const res = yield call(axios.post, link, data);
     dispatchUploadSucceded(action, res.data.message);
   } catch (e) {
     dispatchUploadFailed(action, e);
