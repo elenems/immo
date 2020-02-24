@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import './index.scss';
 import CustomLink from '../../../ui_components/CustomLink/index';
 
 function Controls({ firstName, lastName, loading }) {
