@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TiHeartFullOutline } from 'react-icons/ti';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import {
   hideCardAction,
   showCardAction,
@@ -89,10 +90,26 @@ HeartButton.defaultProps = {
   color: '#fff',
 };
 
+const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+const selectIsInProcess = (state) => state.ui.isInProcess;
+const selectUser = (state) => state.auth.user;
+
+const getIsAuthenticated = createSelector(
+  [selectIsAuthenticated],
+  (isAuthenticated) => isAuthenticated,
+);
+
+const getIsInProcess = createSelector(
+  [selectIsInProcess],
+  (isInProcess) => isInProcess,
+);
+
+const getUser = createSelector([selectUser], (user) => user);
+
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  isInProcess: state.ui.isInProcess,
-  user: state.auth.user,
+  isAuthenticated: getIsAuthenticated(state),
+  isInProcess: getIsInProcess(state),
+  user: getUser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

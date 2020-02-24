@@ -3,6 +3,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { guardAuthPage } from '../utils';
 import Header from '../shared/Header/index';
 import Card from '../ui_components/Card/index';
@@ -18,7 +19,9 @@ async function fetchPhotos(userId) {
   let userPhotos = null;
   let favouritePhotos = null;
   await Promise.all(urlsToFetch.map((u) => fetch(u)))
-    .then((responses) => Promise.all(responses.map((response) => response.json())))
+    .then((responses) =>
+      Promise.all(responses.map((response) => response.json())),
+    )
     .then((objects) => {
       [{ photos: userPhotos }, { likedPhotos: favouritePhotos }] = objects;
     });
@@ -29,7 +32,7 @@ function Profile({ userPhotos, favouritePhotos, userId }) {
   guardAuthPage();
   const [photos, setPhotos] = useState(userPhotos || []);
   const [favourites, setFavourites] = useState(favouritePhotos || []);
-  const [loading, setLoading] = useState(!userId);// false
+  const [loading, setLoading] = useState(!userId); // false
   useEffect(() => {
     if (userId && (!userPhotos || !favouritePhotos)) {
       (async () => {
@@ -53,7 +56,11 @@ function Profile({ userPhotos, favouritePhotos, userId }) {
       <Card />
       <div className="container">
         <Controls loading={loading} />
-        <PhotosSection loading={loading} userPhotos={photos} favouritePhotos={favourites} />
+        <PhotosSection
+          loading={loading}
+          userPhotos={photos}
+          favouritePhotos={favourites}
+        />
       </div>
       <style jsx>
         {`
@@ -84,6 +91,8 @@ Profile.propTypes = {
   userId: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => ({ userId: state.auth.user.id || '' });
+const selectUserId = (state) => state.auth.user.id || '';
+const getUserId = createSelector([selectUserId], (id) => id);
+const mapStateToProps = (state) => ({ userId: getUserId(state) });
 
 export default connect(mapStateToProps)(Profile);

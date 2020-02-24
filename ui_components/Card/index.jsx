@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { MdDone, MdErrorOutline } from 'react-icons/md';
 
 function Card({ text, type }) {
@@ -44,9 +45,14 @@ Card.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
+const selectUiText = (state) => state.ui.text;
+const selectUiType = (state) => state.ui.type;
+const getUiText = createSelector([selectUiText], (text) => text);
+const getUiType = createSelector([selectUiType], (type) => type);
+
 const mapStateToProps = (state) => ({
-  text: state.ui.text,
-  type: state.ui.type,
+  text: getUiText(state),
+  type: getUiType(state),
 });
 
 export default connect(mapStateToProps)(Card);

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import CustomLink from '../../../ui_components/CustomLink/index';
 import Button from '../../../ui_components/Button/index';
 
@@ -14,8 +15,16 @@ function HeaderButtons({ isAuthenticated }) {
   return (
     <div>
       <div className="header-controls">
-        <Button text="Load" title="Load your photo" callback={() => redirectTo(page)} />
-        {isAuthenticated ? <CustomLink href="/profile" text="Profile" title="Profile" /> : <CustomLink href="/join" text="Join" title="Join Immo" />}
+        <Button
+          text="Load"
+          title="Load your photo"
+          callback={() => redirectTo(page)}
+        />
+        {isAuthenticated ? (
+          <CustomLink href="/profile" text="Profile" title="Profile" />
+        ) : (
+          <CustomLink href="/join" text="Join" title="Join Immo" />
+        )}
       </div>
       <style jsx>
         {`
@@ -35,6 +44,14 @@ HeaderButtons.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({ isAuthenticated: state.auth.isAuthenticated });
+const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+const getIsAuthenticated = createSelector(
+  [selectIsAuthenticated],
+  (isAuthenticated) => isAuthenticated,
+);
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: getIsAuthenticated(state),
+});
 
 export default connect(mapStateToProps)(HeaderButtons);
