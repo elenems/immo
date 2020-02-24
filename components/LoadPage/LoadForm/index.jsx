@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { loadAction } from '../../../store/actions';
 import TagsConstructor from './TagsConstructor/index';
+import { removeServerError } from '../../../utils';
 
 const inputStyle = {
   padding: '14px',
@@ -25,12 +26,6 @@ const loadSchema = Yup.object().shape({
     .max(50, 'Too Long')
     .required('*Required field'),
 });
-
-function removeServerError(error, field, errorsObj, callback) {
-  if (error && errorsObj[field]) {
-    callback({ ...errorsObj, [field]: '' });
-  }
-}
 
 function LoadForm({ load, owner }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');

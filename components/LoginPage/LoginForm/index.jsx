@@ -10,6 +10,7 @@ import {
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { loginAction } from '../../../store/actions';
+import { removeServerError } from '../../../utils';
 
 const inputStyle = {
   padding: '14px',
@@ -26,12 +27,6 @@ const loginSchema = Yup.object().shape({
     .max(50, 'Too Long')
     .required('*Required field'),
 });
-
-function removeServerError(error, field, errorsObj, callback) {
-  if (error && errorsObj[field]) {
-    callback({ ...errorsObj, [field]: '' });
-  }
-}
 
 function LoginForm({ login }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');

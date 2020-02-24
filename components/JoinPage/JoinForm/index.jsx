@@ -10,6 +10,7 @@ import {
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { joinAction } from '../../../store/actions';
+import { removeServerError } from '../../../utils';
 
 const inputStyle = {
   padding: '14px',
@@ -33,12 +34,6 @@ const joinSchema = Yup.object().shape({
     .max(50, 'Too Long')
     .required('*Required field'),
 });
-
-function removeServerError(error, field, errorsObj, callback) {
-  if (error && errorsObj[field]) {
-    callback({ ...errorsObj, [field]: '' });
-  }
-}
 
 function JoinForm({ join }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
