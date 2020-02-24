@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import Header from '../../shared/Header/index';
@@ -25,6 +26,11 @@ function Photo({
   }, [id]);
   return (
     <div>
+      <Head>
+        <title>{`${name} | ${firstName} ${lastName || ''}`}</title>
+        <meta name="Description" content={`Photo ${name} by ${firstName} ${lastName || ''}`} />
+        <meta charset="utf-8" key="charset" />
+      </Head>
       <Header />
       <Card />
       <div className="container">
