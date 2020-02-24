@@ -26,7 +26,6 @@ const loadSchema = Yup.object().shape({
     .max(50, 'Too Long')
     .required('*Required field'),
 });
-
 function LoadForm({ load, owner }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
   const [loadErrors, setloadErrors] = useState({});
