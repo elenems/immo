@@ -14,7 +14,7 @@ function Index({ photos }) {
       <Head>
         <title>Immo | Browse photos</title>
         <meta name="Description" content="Browse thousands of creative photos, made by talanted photographers." />
-        <meta charset="utf-8" key="charset" />
+        <meta charSet="utf-8" key="charset" />
       </Head>
       <Header />
       <Card />
