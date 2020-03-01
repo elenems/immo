@@ -9,6 +9,7 @@ import {
 } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { loadAction } from '../../../store/actions';
 import TagsConstructor from './TagsConstructor/index';
 import { removeServerError } from '../../../utils';
@@ -25,7 +26,6 @@ const loadSchema = Yup.object().shape({
     .max(50, 'Too Long')
     .required('*Required field'),
 });
-
 function LoadForm({ load, owner }) {
   const [loaderDisplay, setLoaderDisplay] = useState('none');
   const [loadErrors, setloadErrors] = useState({});
@@ -289,6 +289,9 @@ const mapDispatchToProps = (dispatch) => ({
   load: (payload) => dispatch(loadAction(payload)),
 });
 
-const mapStateToProps = (state) => ({ owner: state.auth.user.id });
+const selectOwner = (state) => state.auth.user.id;
+const getOwner = createSelector([selectOwner], (owner) => owner);
+
+const mapStateToProps = (state) => getOwner(state);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadForm);

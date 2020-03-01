@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { redirectTo, usePageToRedirectTo } from './functions';
 import CustomLink from '../../../ui_components/CustomLink/index';
 import Button from '../../../ui_components/Button/index';
@@ -31,6 +32,14 @@ HeaderButtons.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({ isAuthenticated: state.auth.isAuthenticated });
+const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+const getIsAuthenticated = createSelector(
+  [selectIsAuthenticated],
+  (isAuthenticated) => isAuthenticated,
+);
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: getIsAuthenticated(state),
+});
 
 export default connect(mapStateToProps)(HeaderButtons);

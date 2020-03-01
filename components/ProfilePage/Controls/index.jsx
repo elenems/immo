@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import CustomLink from '../../../ui_components/CustomLink/index';
 
 function Controls({ firstName, lastName, loading }) {
@@ -64,9 +65,14 @@ Controls.defaultProps = {
   firstName: '',
 };
 
+const selectFirstName = (state) => state.auth.user.firstName;
+const selectLastName = (state) => state.auth.user.lastName;
+const getFirstName = createSelector([selectFirstName], (firstName) => firstName);
+const getLastName = createSelector([selectLastName], (lastName) => lastName);
+
 const mapStateToProps = (state) => ({
-  firstName: state.auth.user.firstName,
-  lastName: state.auth.user.lastName,
+  firstName: getFirstName(state),
+  lastName: getLastName(state),
 });
 
 export default connect(mapStateToProps)(Controls);

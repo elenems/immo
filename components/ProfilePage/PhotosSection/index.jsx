@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import PhotosGallery from '../../../shared/PhotosGallery/index';
 
 function PhotosSection({ userPhotos, favouritePhotos, loading }) {
   const [tab, setTab] = useState(0);
   let content = null;
   if (!loading) {
-    content = (
+    content =
       tab === 0 ? (
         <PhotosGallery photos={userPhotos} />
       ) : (
         <PhotosGallery photos={favouritePhotos} />
-      ));
+      );
   }
   return (
     <div className="photos-section">
@@ -70,6 +71,8 @@ PhotosSection.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.auth.user });
+const selectUser = (state) => state.auth.user;
+const getUser = createSelector([selectUser], (user) => user);
+const mapStateToProps = (state) => getUser(state);
 
 export default connect(mapStateToProps)(PhotosSection);
